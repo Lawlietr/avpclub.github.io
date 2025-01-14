@@ -1,85 +1,59 @@
-# DNS 服務資訊
+# AVPClub - 隱私優先的 DNS over HTTPS 服務
 
-## 1. DNS 伺服器設定
-- **DNS over HTTPS**: [https://doh.avpclub.uk/dns-query]
+歡迎使用 doh.avpclub.uk，這是一個專注於隱私保護的公共 DNS 伺服器。我們提供 DNS over HTTPS (DoH) 服務，並且**絕不記錄任何使用者的 DNS 查詢紀錄**，確保您的網路活動完全私密。
 
-### 服務說明
-- **基於 AdGuard Home 服務**  
-  The service is based on AdGuard Home.
+## DNS 請求處理
 
-- **DNS 請求處理**  
-  本服務收到的 DNS 請求，會全部轉發至上游 `tls://1dot1dot1dot1.cloudflare-dns.com`。  
-  All received DNS query requests will be forwarded to `tls://1dot1dot1dot1.cloudflare-dns.com`.
+所有 DNS 請求都會通過加密通道轉發至上游伺服器 `tls://1dot1dot1dot1.cloudflare-dns.com`，確保您的查詢安全且快速。
 
-- **隱私保護**  
-  目前已不再紀錄任何 DNS 查詢結果。  
-  The service will not record any DNS queries now.
+## 隱私保護
 
----
+我們承諾**不記錄任何 DNS 查詢紀錄**。您的隱私是我們的首要任務，我們不會收集、存儲或分享任何與您相關的數據。
 
-## 2. 支援的 DNS 加密協議
-- 支援 **DNS over HTTPS (DoH)** 和 **DNS over TLS (DoT)**，使用 `adh.avpclub.gq`。
+## 支援的 DNS 加密協議
 
----
+我們目前支援 **DNS over HTTPS (DoH)**，您可以使用以下地址進行連接：
+```
+https://doh.avpclub.uk/dns-query
+```
 
-## 3. 目前使用的過濾器規則
-以下是目前使用的過濾器規則清單：
+## 過濾器規則清單
 
-- **AdGuard Simplified Domain Names filter**  
-  [https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt](https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt)
+我們使用以下過濾器規則來阻擋廣告、惡意軟體和其他不必要的內容：
 
-- **1hos.cf Mini Filter**  
-  [https://1hos.cf/mini/](https://1hos.cf/mini/)
+- [AdGuard Simplified Domain Names filter](https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt)
+- [1hos.cf Mini Filter](https://1hos.cf/mini/)
+- [StevenBlack's Hosts](https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts)
+- [dns-blocklists](https://raw.githubusercontent.com/vokins/yhosts/master/hosts)
+- [Peter Lowe's Adservers](https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext)
+- [TW165-redirect](https://filter.futa.gg/TW165-redirect.txt)
+- [futa hosts_abp](https://filter.futa.gg/hosts_abp.txt)
 
-- **StevenBlack's Hosts**  
-  [https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts](https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts)
+## 白名單 (Whitelist)
 
-- **yhosts**  
-  [https://raw.githubusercontent.com/vokins/yhosts/master/hosts](https://raw.githubusercontent.com/vokins/yhosts/master/hosts)
+以下域名已被列入白名單，確保它們不會被過濾器阻擋：
 
-- **Peter Lowe's Adservers**  
-  [https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext](https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext)
+```
+（目前無白名單項目）
+```
 
-- **CoinBlockerLists**  
-  [https://gitlab.com/ZeroDot1/CoinBlockerLists/raw/master/hosts_browser](https://gitlab.com/ZeroDot1/CoinBlockerLists/raw/master/hosts_browser)
+## 黑名單 (Blacklist)
 
----
+以下域名已被列入黑名單，它們會被過濾器阻擋：
 
-## 4. 自建黑白名單
-以下是自建的白名單與黑名單規則：
+```
+api.mousegesturesapi.com
+```
 
-### 白名單 (Whitelist)
-```plaintext
-@@||1hosts.cf^
-@@||adaway.org^
-@@||b-api.facebook.com^
-@@||cdn.taboola.com^
-@@||click.simba.taobao.com^
-@@||count.taobao.com^
-@@||dailyupdate.wangwang.taobao.com^
-@@||ebc.net.tw^
-@@||filters.adtidy.org^
-@@||graph.facebook.com^
-@@||h-adashx.ut.taobao.com^
-@@||hosts-file.net^
-@@||i.click.taobao.com^
-@@||ju.taobao.com^
-@@||m.taobao.com^
-@@||mirror1.malwaredomains.com^
-@@||mmstat.com^
-@@||mos.m.taobao.com^
-@@||mqtt-mini.facebook.com^
-@@||mtop.subaru.pc.mini.detail^
-@@||news.ebc.net.tw^
-@@||passport.baidu.com^
-@@||pgl.yoyo.org^
-@@||raw.githubusercontent.com^
-@@||s.click.taobao.com^
-@@||s3.amazonaws.com^
-@@||sysctl.org^
-@@||tui.taobao.com^
-@@||winhelp2002.mvps.org^
-@@||world.taobao.com^
-@@||zeustracker.abuse.ch^
-@@||api.io.mi.com^
-@@||data.mistat.xiaomi.com^
+## 如何開始使用
+
+要使用我們的 DNS over HTTPS 服務，請將您的設備或瀏覽器的 DNS 設置更改為：
+```
+https://doh.avpclub.uk/dns-query
+```
+
+如需詳細設置指南，請參考您的設備或瀏覽器的官方文檔。
+
+## 聯繫與反饋
+
+如果您有任何問題或建議，請通過 [dns.github@slmail.me](mailto:dns.github.armored046@slmail.me) 聯繫我們。

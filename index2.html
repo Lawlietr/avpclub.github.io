@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>l.avpclub.uk - 隱私優先的 DNS over HTTPS 服務</title>
     <style>
-        /* 日間模式 */
+        /* 基本樣式 */
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
@@ -20,16 +20,16 @@
             transition: color 0.3s;
         }
         h1 {
-            font-size: 2.5em;
+            font-size: 2em;
             margin-bottom: 20px;
         }
         h2 {
-            font-size: 1.8em;
+            font-size: 1.5em;
             margin-top: 30px;
             margin-bottom: 15px;
         }
         p {
-            font-size: 1.1em;
+            font-size: 1em;
             margin-bottom: 15px;
         }
         code {
@@ -61,14 +61,15 @@
         /* 夜間模式切換按鈕 */
         .mode-toggle {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 10px;
+            right: 10px;
             background: none;
             border: none;
             font-size: 1.5em;
             cursor: pointer;
             color: #2c3e50;
             transition: color 0.3s;
+            z-index: 1000;
         }
         .mode-toggle:hover {
             color: #3498db;
@@ -96,6 +97,53 @@
         }
         body.dark-mode .mode-toggle:hover {
             color: #1abc9c;
+        }
+
+        /* 行動裝置優化 */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            h1 {
+                font-size: 1.8em;
+                margin-top: 40px; /* 避免按鈕遮擋標題 */
+            }
+            h2 {
+                font-size: 1.4em;
+            }
+            p {
+                font-size: 0.95em;
+            }
+            .mode-toggle {
+                top: 5px;
+                right: 5px;
+                font-size: 1.2em;
+            }
+            pre {
+                font-size: 0.9em;
+                padding: 8px;
+            }
+            ul {
+                margin-left: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.6em;
+            }
+            h2 {
+                font-size: 1.3em;
+            }
+            p {
+                font-size: 0.9em;
+            }
+            .mode-toggle {
+                font-size: 1em;
+            }
+            pre {
+                font-size: 0.85em;
+            }
         }
     </style>
 </head>
@@ -183,14 +231,27 @@
     </p>
 
     <script>
+        // 檢查 localStorage 中是否存儲了用戶的日夜模式選擇
+        const savedMode = localStorage.getItem('dark-mode');
+        const body = document.body;
+        const toggleButton = document.querySelector('.mode-toggle');
+
+        if (savedMode === 'enabled') {
+            body.classList.add('dark-mode');
+            toggleButton.textContent = '🌕'; // 夜間模式圖示
+        } else {
+            body.classList.remove('dark-mode');
+            toggleButton.textContent = '🌓'; // 日間模式圖示
+        }
+
         function toggleDarkMode() {
-            const body = document.body;
             body.classList.toggle('dark-mode');
-            const toggleButton = document.querySelector('.mode-toggle');
             if (body.classList.contains('dark-mode')) {
                 toggleButton.textContent = '🌕'; // 夜間模式圖示
+                localStorage.setItem('dark-mode', 'enabled'); // 存儲用戶選擇
             } else {
                 toggleButton.textContent = '🌓'; // 日間模式圖示
+                localStorage.setItem('dark-mode', 'disabled'); // 存儲用戶選擇
             }
         }
     </script>

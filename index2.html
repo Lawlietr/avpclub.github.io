@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>l.avpclub.uk - 隱私優先的 DNS over HTTPS 服務</title>
     <style>
+        /* 日間模式 */
         body {
             font-family: Arial, sans-serif;
             line-height: 1.6;
@@ -12,79 +13,111 @@
             padding: 20px;
             background-color: #f9f9f9;
             color: #333;
+            transition: background-color 0.3s, color 0.3s;
         }
-
         h1, h2 {
             color: #2c3e50;
+            transition: color 0.3s;
         }
-
         h1 {
             font-size: 2.5em;
             margin-bottom: 20px;
         }
-
         h2 {
             font-size: 1.8em;
             margin-top: 30px;
             margin-bottom: 15px;
         }
-
         p {
             font-size: 1.1em;
             margin-bottom: 15px;
         }
-
         code {
             background-color: #e8e8e8;
             padding: 2px 5px;
             border-radius: 3px;
             font-family: monospace;
+            transition: background-color 0.3s;
         }
-
         pre {
             background-color: #e8e8e8;
             padding: 10px;
             border-radius: 5px;
             overflow-x: auto;
+            transition: background-color 0.3s;
         }
-
         ul {
             list-style-type: disc;
             margin-left: 20px;
         }
-
         a {
             color: #3498db;
             text-decoration: none;
         }
-
         a:hover {
             text-decoration: underline;
+        }
+
+        /* 夜間模式切換按鈕 */
+        .mode-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #2c3e50;
+            transition: color 0.3s;
+        }
+        .mode-toggle:hover {
+            color: #3498db;
+        }
+
+        /* 夜間模式 */
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        body.dark-mode h1, body.dark-mode h2 {
+            color: #ffffff;
+        }
+        body.dark-mode code {
+            background-color: #333;
+        }
+        body.dark-mode pre {
+            background-color: #333;
+        }
+        body.dark-mode a {
+            color: #1abc9c;
+        }
+        body.dark-mode .mode-toggle {
+            color: #e0e0e0;
+        }
+        body.dark-mode .mode-toggle:hover {
+            color: #1abc9c;
         }
     </style>
 </head>
 <body>
+    <button class="mode-toggle" onclick="toggleDarkMode()">🌓</button>
     <h1>l.avpclub.uk - 隱私優先的 DNS over HTTPS 服務</h1>
     <p>
         歡迎使用 l.avpclub.uk，這是一個專注於隱私保護的公共 DNS 伺服器。我們提供 DNS over HTTPS (DoH) 服務，並且<strong>絕不記錄任何使用者的 DNS 查詢紀錄</strong>，確保您的網路活動完全私密。
     </p>
-
     <h2>DNS 請求處理</h2>
     <p>
         所有 DNS 請求都會通過加密通道轉發至上游伺服器 <code>tls://1dot1dot1dot1.cloudflare-dns.com</code>，確保您的查詢安全且快速。
     </p>
-
     <h2>隱私保護</h2>
     <p>
         我們承諾<strong>不記錄任何 DNS 查詢紀錄</strong>。您的隱私是我們的首要任務，我們不會收集、存儲或分享任何與您相關的數據。
     </p>
-
     <h2>支援的 DNS 加密協議</h2>
     <p>
         我們目前支援 <strong>DNS over HTTPS (DoH)</strong>，您可以使用以下地址進行連接：
         <code>https://l.avpclub.uk/dns-query</code>
     </p>
-
     <h2>過濾器規則清單</h2>
     <p>
         我們使用以下過濾器規則來阻擋廣告、惡意軟體和其他不必要的內容：
@@ -97,7 +130,6 @@
         <li><a href="https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext" target="_blank">Peter Lowe's Adservers</a></li>
         <li><a href="https://gitlab.com/ZeroDot1/CoinBlockerLists/raw/master/hosts_browser" target="_blank">CoinBlockerLists</a></li>
     </ul>
-
     <h2>白名單 (Whitelist)</h2>
     <p>
         以下域名已被列入白名單，確保它們不會被過濾器阻擋：
@@ -137,7 +169,6 @@
 @@||api.io.mi.com^
 @@||data.mistat.xiaomi.com^
     </pre>
-
     <h2>如何開始使用</h2>
     <p>
         要使用我們的 DNS over HTTPS 服務，請將您的設備或瀏覽器的 DNS 設置更改為：
@@ -146,10 +177,22 @@
     <p>
         如需詳細設置指南，請參考您的設備或瀏覽器的官方文檔。
     </p>
-
     <h2>聯繫與反饋</h2>
     <p>
         如果您有任何問題或建議，請通過 <a href="mailto:your-email@example.com">your-email@example.com</a> 聯繫我們。
     </p>
+
+    <script>
+        function toggleDarkMode() {
+            const body = document.body;
+            body.classList.toggle('dark-mode');
+            const toggleButton = document.querySelector('.mode-toggle');
+            if (body.classList.contains('dark-mode')) {
+                toggleButton.textContent = '🌕'; // 夜間模式圖示
+            } else {
+                toggleButton.textContent = '🌓'; // 日間模式圖示
+            }
+        }
+    </script>
 </body>
 </html>

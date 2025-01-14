@@ -1,9 +1,7 @@
 # DNS 服務資訊
 
 ## 1. DNS 伺服器設定
-- **DNS1**: `104.199.253.96`
-- **DNS over HTTPS**: [https://adh.avpclub.gq/dns-query](https://adh.avpclub.gq/dns-query)
-- **DNS over TLS**: `tls://adh.avpclub.gq`
+- **DNS over HTTPS**: [https://doh.avpclub.uk/dns-query]
 
 ### 服務說明
 - **基於 AdGuard Home 服務**  

@@ -1,21 +1,135 @@
 <!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Hello World with Minesweeper</title>
-        <link rel="stylesheet" href="/src/style.css">
-      </head>
-      <body>
-        <div class="container">
-          <h1>Hello World</h1>
-          <button id="reset-button">Reset Game</button>
-          <div id="minesweeper-container"></div>
-          <div id="game-over-message" class="game-over-message hidden">Game Over!</div>
-        </div>
-        <footer>
-          Made by bolt.diy
-        </footer>
-        <script type="module" src="/src/main.js"></script>
-      </body>
-    </html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVPClub - 隱私優先的 DNS over HTTPS 服務</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        header {
+            background-color: #1e1e1e;
+            padding: 20px 0;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2em;
+            margin: 0;
+        }
+        section {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+        }
+        h2 {
+            font-size: 1.5em;
+            color: #ffcc00;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .email-link {
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+        .email-link::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffcc00;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .email-link:hover::after {
+            opacity: 0.2;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>AVPClub - 隱私優先的 DNS over HTTPS 服務</h1>
+</header>
+
+<section>
+    <p>歡迎使用 doh.avpclub.uk，這是一個專注於隱私保護的公共 DNS 伺服器。我們提供 DNS over HTTPS (DoH) 服務，並且絕不記錄任何使用者的 DNS 查詢紀錄，確保您的網路活動完全私密。</p>
+
+    <h2>DNS 請求處理</h2>
+    <p>所有 DNS 請求都會通過加密通道轉發至上游伺服器 tls://1dot1dot1dot1.cloudflare-dns.com，確保您的查詢安全且快速。</p>
+
+    <h2>隱私保護</h2>
+    <p>我們承諾不記錄任何 DNS 查詢紀錄。您的隱私是我們的首要任務，我們不會收集、存儲或分享任何與您相關的數據。</p>
+
+    <h2>支援的 DNS 加密協議</h2>
+    <p>我們目前支援 DNS over HTTPS (DoH)，您可以使用以下地址進行連接：</p>
+    <ul>
+        <li><a href="https://doh.avpclub.uk/dns-query">https://doh.avpclub.uk/dns-query</a></li>
+    </ul>
+
+    <h2>過濾器規則清單</h2>
+    <p>我們使用以下過濾器規則來阻擋廣告、惡意軟體和其他不必要的內容：</p>
+    <ul>
+        <li>AdGuard Simplified Domain Names filter</li>
+        <li>1hos.cf Mini Filter</li>
+        <li>StevenBlack's Hosts</li>
+        <li>dns-blocklists</li>
+        <li>Peter Lowe's Adservers</li>
+        <li>TW165-redirect</li>
+        <li>futa hosts_abp</li>
+    </ul>
+
+    <h2>白名單 (Whitelist)</h2>
+    <p>目前無白名單項目</p>
+
+    <h2>黑名單 (Blacklist)</h2>
+    <ul>
+        <li>api.mousegesturesapi.com</li>
+    </ul>
+
+    <h2>如何開始使用</h2>
+    <p>要使用我們的 DNS over HTTPS 服務，請將您的設備或瀏覽器的 DNS 設置更改為：</p>
+    <ul>
+        <li><a href="https://doh.avpclub.uk/dns-query">https://doh.avpclub.uk/dns-query</a></li>
+    </ul>
+    <p>如需詳細設置指南，請參考您的設備或瀏覽器的官方文檔。</p>
+
+    <h2>聯繫與反饋</h2>
+    <div class="email-link">
+        <a id="emailLink" href="#">dns.github@slmail.me</a>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const emailParts = ['dns.github', 'slmail.me'];
+        const emailLink = document.getElementById('emailLink');
+        emailLink.href = 'mailto:' + emailParts.join('@');
+        emailLink.textContent = emailParts.join('@');
+    });
+</script>
+
+</body>
+</html>

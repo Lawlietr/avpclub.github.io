@@ -112,23 +112,23 @@
     <h2>如何開始使用</h2>
     <p>要使用我們的 DNS over HTTPS 服務，請將您的設備或瀏覽器的 DNS 設置更改為：</p>
     <ul>
-        <li><a href="https://doh.avpclub.uk/dns-query">https://doh.avpclub.uk/dns-query</a></li>
+        <li>https://doh.avpclub.uk/dns-query</li>
     </ul>
-    <p>如需詳細設置指南，請參考您的設備或瀏覽器的官方文檔。</p>
+    <p>如需詳細設置指南，請參考您的設備或瀏覽器的官方指南。</p>
 
-    <h2>聯繫與反饋</h2>
+    <h2>聯絡與反饋</h2>
     <div class="email-link">
-        <a id="emailLink" href="#">dns.github@slmail.me</a>
+        <a id="emailLink" href="#" onclick="showEmail()">dns.github@slmail.me</a>
     </div>
 </section>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    function showEmail() {
         const emailParts = ['dns.github', 'slmail.me'];
         const emailLink = document.getElementById('emailLink');
         emailLink.href = 'mailto:' + emailParts.join('@');
         emailLink.textContent = emailParts.join('@');
-    });
+    }
 </script>
 
 </body>

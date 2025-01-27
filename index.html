@@ -1,147 +1,175 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AVPClub - 隱私優先的 DNS over HTTPS 服務</title>
     <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --text-color: #ecf0f1;
+            --background-color: #2c3e50;
+            --card-background: #34495e;
+            --link-color: #9b59b6;
+        }
+
         body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
             line-height: 1.6;
         }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
         header {
-            background-color: #1e1e1e;
-            padding: 20px 0;
             text-align: center;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        h1 {
-            font-size: 2em;
-            margin: 0;
-        }
-        section {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 20px;
-            background-color: #1e1e1e;
+
+        .card {
+            background-color: var(--card-background);
             border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
         }
-        h2 {
-            font-size: 1.5em;
-            color: #ffcc00;
+
+        .highlight {
+            color: var(--accent-color);
+            font-weight: bold;
         }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            margin-bottom: 10px;
-        }
+
         a {
-            color: #ffcc00;
+            color: var(--link-color);
             text-decoration: none;
         }
+
         a:hover {
             text-decoration: underline;
         }
-        .email-link {
-            display: inline-block;
+
+        .section-title {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 1rem;
+            margin-top: 2rem;
+        }
+
+        .code-snippet {
+            background-color: #1a1a1a;
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: monospace;
+            margin: 1rem 0;
+        }
+
+        /* Email保護樣式 */
+        .email-protection {
             position: relative;
-            overflow: hidden;
+            margin: 1rem 0;
         }
-        .email-link::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #ffcc00;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
+
+        .email-protection span {
+            margin-right: 0.5px;
         }
-        .email-link:hover::after {
-            opacity: 0.2;
+
+        .email-image {
+            display: inline-block;
+            background-color: #34495e;
+            padding: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .email-image:hover {
+            background-color: #2c3e50;
+        }
+
+        .email-image span {
+            display: inline-block;
+            color: var(--text-color);
+            margin: 0 0.2rem;
+        }
+
+        .invisible {
+            display: none;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <header>
+            <h1>AVPClub</h1>
+            <p>隱私優先的 DNS over HTTPS 服務</p>
+        </header>
 
-<header>
-    <h1>AVPClub - 隱私優先的 DNS over HTTPS 服務</h1>
-</header>
+        <div class="card">
+            <h2 class="section-title">關於我們</h2>
+            <p>歡迎使用 <a href="https://doh.avpclub.uk">doh.avpclub.uk</a>，這是一個專注於隱私保護的公共 DNS 伺服器。我們提供 DNS over HTTPS (DoH) 服務，並且絕不記錄任何使用者的 DNS 查詢紀錄，確保您的網路活動完全私密。</p>
+        </div>
 
-<section>
-    <p>歡迎使用 <a href="https://github.com/Lawlietr/avpclub.github.io">doh.avpclub.uk</a>，這是一個專注於隱私保護的公共 DNS 伺服器。我們提供 DNS over HTTPS (DoH) 服務，並且絕不記錄任何使用者的 DNS 查詢紀錄，確保您的網路活動完全私密。</p>
+        <div class="card">
+            <h2 class="section-title">技術細節</h2>
+            <p>所有 DNS 請求都會通過加密通道轉發至上游伺服器：
+                <span class="code-snippet">tls://1dot1dot1dot1.cloudflare-dns.com</span>，確保您的查詢安全且快速。</p>
+        </div>
 
-    <h2>DNS 請求處理</h2>
-    <p>所有 DNS 請求都會通過加密通道轉發至上游 CloudFlare DNS 伺服器 tls://1dot1dot1dot1.cloudflare-dns.com，確保您的查詢安全且快速。</p>
+        <div class="card">
+            <h2 class="section-title">隱私承諾</h2>
+            <p>我們承諾不記錄任何 DNS 查詢紀錄。您的隱私是我們的首要任務，我們不會收集、存儲或分享任何與您相關的數據。</p>
+        </div>
 
-    <h2>隱私保護</h2>
-    <p>我們承諾不記錄任何 DNS 查詢紀錄。您的隱私是我們的首要任務，我們不會收集、存儲或分享任何與您相關的數據。</p>
+        <div class="card">
+            <h2 class="section-title">支援的協議</h2>
+            <p>我們目前支援 <span class="highlight">DNS over HTTPS (DoH)</span>，您可以使用以下地址進行連接：</p>
+            <div class="code-snippet">https://doh.avpclub.uk/dns-query</div>
+        </div>
 
-    <h2>支援的 DNS 加密協議</h2>
-    <p>我們目前支援 DNS over HTTPS (DoH)，您可以使用以下地址進行連接：</p>
-    <blockquote>
-        <ul>
-                    <li><b>https://doh.avpclub.uk/dns-query</b></li>
-        </ul>
-    </blockquote>
+        <div class="card">
+            <h2 class="section-title">過濾器規则</h2>
+            <p>我們使用以下過濾器規則來阻擋廣告、惡意軟體和其他不必要的內容：</p>
+            <ul>
+                <li>AdGuard Simplified Domain Names filter</li>
+                <li>1hos.cf Mini Filter</li>
+                <li>StevenBlack's Hosts</li>
+                <li>dns-blocklists</li>
+                <li>Peter Lowe's Adservers</li>
+                <li>TW165-redirect</li>
+                <li>futa hosts_abp</li>
+            </ul>
 
-    <h2>過濾器規則清單</h2>
-    <p>我們使用以下過濾器規則來阻擋廣告、惡意軟體和其他不必要的內容：</p>
-    <blockquote>
-        <ul>
-            <li><a href="https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt">AdGuard Simplified Domain Names filter</a></li>
-            <li><a href="https://1hos.cf/mini/">1hos.cf Mini Filter</a></li>
-            <li><a href="https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts">StevenBlack's Hosts</a></li>
-            <li><a href="https://raw.githubusercontent.com/vokins/yhosts/master/hosts">dns-blocklists</a></li>
-            <li><a href="https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext">Peter Lowe's Adservers</a></li>
-            <li><a href="https://filter.futa.gg/TW165-redirect.txt">TW165-redirect</a></li>
-            <li><a href="https://filter.futa.gg/hosts_abp.txt">futa hosts_abp</a></li>
-        </ul>
-    </blockquote>
+            <h3>黑名單 (Blacklist)</h3>
+            <ul>
+                <li>api.mousegesturesapi.com</li>
+            </ul>
+        </div>
 
-    <h2>白名單 (Whitelist)</h2>
-    <blockquote>
-        <ul>
-    <p>目前無白名單項目</p>
-        </ul>
-    </blockquote>
+        <div class="card">
+            <h2 class="section-title">開始使用</h2>
+            <p>要使用我們的 DNS over HTTPS 服務，請將您的設備或瀏覽器的 DNS 設置更改為：</p>
+            <div class="code-snippet">https://doh.avpclub.uk/dns-query</div>
+            <p>如需詳細設置指南，請參考您的設備或瀏覽器的官方文件。</p>
+        </div>
 
-    <h2>黑名單 (Blacklist)</h2>
-    <blockquote>
-    <ul>
-        <li><b>api.mousegesturesapi.com</b></li>
-    </ul>
-    </blockquote>
-
-    <h2>如何開始使用</h2>
-    <p>要使用我們的 DNS over HTTPS 服務，請將您的設備或瀏覽器的 DNS 設置更改為：</p>
-    <blockquote>
-        <ul>
-        <li><b>https://doh.avpclub.uk/dns-query</b></li>
-    </ul>
-</blockquote>
-    <p>如需詳細設置指南，請參考您的設備或瀏覽器的官方指南。</p>
-
-    <h2>聯絡與反饋</h2>
-    <div class="email-link">
-        <a id="emailLink" href="#" onclick="showEmail()">dns.github@slmail.me</a>
+        <div class="card">
+            <h2 class="section-title">聯絡我們</h2>
+            <p> jika您有任何問題或建議，請通過以下方式聯絡我們：</p>
+            <!-- 方法1: 分散顯示 -->
+            <p class="email-protection">
+                <span>dns.github@</span>
+                <span class="invisible">not-real-domain</span>
+                <span>slmail.me</span>
+            </p>
+        </div>
     </div>
-</section>
-
-<script>
-    function showEmail() {
-        const emailParts = ['dns.github', 'slmail.me'];
-        const emailLink = document.getElementById('emailLink');
-        emailLink.href = 'mailto:' + emailParts.join('@');
-        emailLink.textContent = emailParts.join('@');
-    }
-</script>
-
 </body>
 </html>

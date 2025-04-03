@@ -332,33 +332,35 @@
 <section class="py-16 bg-gray-900 text-white">
   <div class="container mx-auto px-6 text-center">
     <h2 class="text-3xl font-bold mb-6">檢查您的DNS是否已加密</h2>
-    <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">使用我們的工具快速檢測您的網路連接是否使用了加密DNS</p>
+    <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">使用我們的工具檢測您的網路連接是否使用了加密DNS</p>
     
     <div class="bg-gray-800 rounded-xl p-8 max-w-2xl mx-auto">
       <div id="testResult" class="hidden bg-gray-700 p-6 rounded-lg text-left">
         <div class="flex items-center mb-4">
-          <div class="bg-green-500 rounded-full w-4 h-4 mr-3"></div>
+          <div id="statusIcon" class="rounded-full w-4 h-4 mr-3"></div>
           <h3 class="text-xl font-semibold">測試結果</h3>
         </div>
         <div class="grid grid-cols-2 gap-4 mb-4">
           <div>
             <p class="text-gray-400">DNS協議</p>
-            <p class="font-medium">DNS over HTTPS (DoH)</p>
+            <p id="dnsProtocol" class="font-medium">檢測中...</p>
           </div>
           <div>
             <p class="text-gray-400">DNS伺服器</p>
-            <p class="font-medium">Cloudflare (1.1.1.1)</p>
+            <p id="dnsServer" class="font-medium">檢測中...</p>
           </div>
         </div>
-        <div class="bg-green-900 bg-opacity-30 p-4 rounded-lg border border-green-800">
-          <i class="fas fa-check-circle text-green-400 mr-2"></i>
-          <span>您的DNS查詢已加密，隱私受到保護！</span>
+        <div id="resultMessage" class="p-4 rounded-lg border hidden">
+          <i id="resultIcon" class="fas mr-2"></i>
+          <span id="resultText"></span>
         </div>
       </div>
       
       <button id="runTestBtn" class="mt-6 bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition font-medium w-full max-w-xs mx-auto flex items-center justify-center">
         <i class="fas fa-play mr-3"></i> 立即運行測試
       </button>
+      
+      <p class="text-sm text-gray-400 mt-4">測試可能需要10-20秒，請耐心等待</p>
     </div>
   </div>
 </section>
@@ -536,18 +538,69 @@
     }
   });
 
-  // 測試按鈕功能
-  document.getElementById('runTestBtn').addEventListener('click', function() {
+  // DNS測試功能
+  document.getElementById('runTestBtn').addEventListener('click', async function() {
     const testResult = document.getElementById('testResult');
-    this.innerHTML = '<i class="fas fa-spinner fa-spin mr-3"></i> 測試中...';
-    this.disabled = true;
+    const statusIcon = document.getElementById('statusIcon');
+    const dnsProtocol = document.getElementById('dnsProtocol');
+    const dnsServer = document.getElementById('dnsServer');
+    const resultMessage = document.getElementById('resultMessage');
+    const resultIcon = document.getElementById('resultIcon');
+    const resultText = document.getElementById('resultText');
+    const runTestBtn = this;
     
-    // 模擬測試過程
-    setTimeout(() => {
-      testResult.classList.remove('hidden');
-      this.innerHTML = '<i class="fas fa-redo mr-3"></i> 重新測試';
-      this.disabled = false;
-    }, 1500);
+    // 顯示測試中狀態
+    testResult.classList.remove('hidden');
+    resultMessage.classList.add('hidden');
+    runTestBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-3"></i> 測試中...';
+    runTestBtn.disabled = true;
+    
+    // 重置顯示
+    statusIcon.className = 'rounded-full w-4 h-4 mr-3 bg-gray-500 animate-pulse';
+    dnsProtocol.textContent = '檢測中...';
+    dnsServer.textContent = '檢測中...';
+    
+    try {
+      // 使用真實的DNS檢測API
+      const response = await fetch('https://dns.google/resolve?name=example.com&type=A');
+      const data = await response.json();
+      
+      // 檢測是否使用加密DNS
+      const isEncrypted = response.url.startsWith('https://');
+      const protocol = isEncrypted ? 'DNS over HTTPS (DoH)' : '傳統DNS (未加密)';
+      const server = data.Answer ? data.Answer[0].data : '未知';
+      
+      // 更新顯示結果
+      dnsProtocol.textContent = protocol;
+      dnsServer.textContent = server;
+      
+      if (isEncrypted) {
+        statusIcon.className = 'rounded-full w-4 h-4 mr-3 bg-green-500';
+        resultMessage.className = 'bg-green-900 bg-opacity-30 p-4 rounded-lg border border-green-800 flex items-center';
+        resultIcon.className = 'fas fa-check-circle text-green-400 mr-2';
+        resultText.textContent = '您的DNS查詢已加密，隱私受到保護！';
+      } else {
+        statusIcon.className = 'rounded-full w-4 h-4 mr-3 bg-red-500';
+        resultMessage.className = 'bg-red-900 bg-opacity-30 p-4 rounded-lg border border-red-800 flex items-center';
+        resultIcon.className = 'fas fa-exclamation-triangle text-red-400 mr-2';
+        resultText.textContent = '您的DNS查詢未加密，隱私可能暴露！';
+      }
+      
+      resultMessage.classList.remove('hidden');
+    } catch (error) {
+      console.error('DNS測試失敗:', error);
+      statusIcon.className = 'rounded-full w-4 h-4 mr-3 bg-yellow-500';
+      dnsProtocol.textContent = '測試失敗';
+      dnsServer.textContent = '無法連接到檢測服務';
+      
+      resultMessage.className = 'bg-yellow-900 bg-opacity-30 p-4 rounded-lg border border-yellow-800 flex items-center';
+      resultIcon.className = 'fas fa-exclamation-circle text-yellow-400 mr-2';
+      resultText.textContent = 'DNS測試失敗，請檢查您的網路連接後重試';
+      resultMessage.classList.remove('hidden');
+    } finally {
+      runTestBtn.innerHTML = '<i class="fas fa-redo mr-3"></i> 重新測試';
+      runTestBtn.disabled = false;
+    }
   });
   
   // 常見問題切換

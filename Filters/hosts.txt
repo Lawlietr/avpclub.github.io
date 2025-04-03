@@ -1,0 +1,26 @@
+! Title: DoH.AVPClub.uk DNS Filterlist
+! Version: 2025.0403-1
+! Expires: 1 day
+! Homepage: https://github.com/Lawlietr/avpclub.github.io
+!
+||ads.ad2iction.com^
+||ads.flurry.com^
+||apnsgcm.superweather.tw^
+||apnsgcmt.superweather.tw^
+||atsv2-fp.wg1.b.yahoo.com^
+||image.superweather.tw^
+||moptt.azurewebsites.net^
+||moptt.blob.core.windows.net^
+||tkmftc.aotter.net^
+||a.line.akadns.net^
+||trafficjunky.net^
+||adtng.com^
+||popin.cc^
+||5hz.org^$important
+||version.bind^$important
+||pizzaseo.com^$important
+||xvlpazn.cn^$important
+||sjpop1z.com^$important
+||sch.line.me^
+||extensionpay.com^
+||api.mousegesturesapi.com^$important

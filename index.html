@@ -1,175 +1,488 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVPClub - 隱私優先的 DNS over HTTPS 服務</title>
+    <title>保護您的數位隱私 - DNS加密的重要性</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #34495e;
-            --accent-color: #3498db;
-            --text-color: #ecf0f1;
-            --background-color: #2c3e50;
-            --card-background: #34495e;
-            --link-color: #9b59b6;
+        .hero-gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #93c5fd 100%);
         }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
+        .animate-bounce-slow {
+            animation: bounce-slow 3s infinite;
         }
-
-        header {
-            text-align: center;
-            padding: 2rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .card {
-            background-color: var(--card-background);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .highlight {
-            color: var(--accent-color);
-            font-weight: bold;
-        }
-
-        a {
-            color: var(--link-color);
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .section-title {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 1rem;
-            margin-top: 2rem;
-        }
-
-        .code-snippet {
-            background-color: #1a1a1a;
-            padding: 1rem;
-            border-radius: 4px;
-            font-family: monospace;
-            margin: 1rem 0;
-        }
-
-        /* Email保護樣式 */
-        .email-protection {
-            position: relative;
-            margin: 1rem 0;
-        }
-
-        .email-protection span {
-            margin-right: 0.5px;
-        }
-
-        .email-image {
-            display: inline-block;
-            background-color: #34495e;
-            padding: 0.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .email-image:hover {
-            background-color: #2c3e50;
-        }
-
-        .email-image span {
-            display: inline-block;
-            color: var(--text-color);
-            margin: 0 0.2rem;
-        }
-
-        .invisible {
-            display: none;
+        @keyframes bounce-slow {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>AVPClub</h1>
-            <p>隱私優先的 DNS over HTTPS 服務</p>
-        </header>
-
-        <div class="card">
-            <h2 class="section-title">關於我們</h2>
-            <p>歡迎使用 <a href="https://github.com/Lawlietr/avpclub.github.io">doh.avpclub.uk</a>，這是一個專注於隱私保護的公共 DNS 伺服器。我們提供 DNS over HTTPS (DoH) 服務，並且絕不記錄任何使用者的 DNS 查詢紀錄，確保您的網路活動完全私密。</p>
+<body class="font-sans bg-gray-50">
+    <!-- 導航欄 -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-lock text-blue-600 text-2xl"></i>
+                <span class="text-xl font-bold text-gray-800">DNS隱私保護</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#why" class="text-gray-600 hover:text-blue-600 transition">為什麼重要</a>
+                <a href="#how" class="text-gray-600 hover:text-blue-600 transition">如何運作</a>
+                <a href="#protect" class="text-gray-600 hover:text-blue-600 transition">保護自己</a>
+                <a href="https://github.com/Lawlietr/avpclub.github.io" target="_blank" class="text-gray-600 hover:text-blue-600 transition flex items-center">
+                    <i class="fab fa-github mr-1"></i> 項目主頁
+                </a>
+            </div>
+            <button class="md:hidden text-gray-600">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
         </div>
+    </nav>
 
-        <div class="card">
-            <h2 class="section-title">技術細節</h2>
-            <p>所有 DNS 請求都會通過加密通道轉發至上游伺服器：
-                <span class="code-snippet">tls://1dot1dot1dot1.cloudflare-dns.com</span>，確保您的查詢安全且快速。</p>
+    <!-- 英雄區域 -->
+    <section class="hero-gradient text-white py-20">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 animate-bounce-slow">您的DNS查詢安全嗎？</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">在數位時代，DNS加密是保護您網路隱私的第一道防線</p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <button class="bg-white text-blue-600 font-bold px-8 py-3 rounded-full hover:bg-gray-100 transition transform hover:scale-105">
+                    了解更多 <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+                <button class="border-2 border-white text-white font-bold px-8 py-3 rounded-full hover:bg-white hover:text-blue-600 transition transform hover:scale-105">
+                    立即檢查 <i class="fas fa-shield-alt ml-2"></i>
+                </button>
+            </div>
         </div>
+    </section>
 
-        <div class="card">
-            <h2 class="section-title">隱私承諾</h2>
-            <p>我們承諾不記錄任何 DNS 查詢紀錄。您的隱私是我們的首要任務，我們不會收集、存儲或分享任何與您相關的數據。</p>
+    <!-- 為什麼DNS加密重要 -->
+    <section id="why" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">為什麼DNS加密如此重要？</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-gray-50 p-8 rounded-xl shadow-md card-hover transition">
+                    <div class="text-blue-600 mb-4">
+                        <i class="fas fa-user-secret text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800">隱私保護</h3>
+                    <p class="text-gray-600">傳統DNS查詢是明文的，就像寄送明信片一樣，任何人都可以看到您訪問的網站。加密DNS確保您的瀏覽歷史只屬於您自己。</p>
+                </div>
+                <div class="bg-gray-50 p-8 rounded-xl shadow-md card-hover transition">
+                    <div class="text-blue-600 mb-4">
+                        <i class="fas fa-shield-alt text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800">安全防護</h3>
+                    <p class="text-gray-600">DNS加密防止中間人攻擊和DNS劫持，確保您連接到的是真正的網站，而不是惡意偽造的釣魚網站。</p>
+                </div>
+                <div class="bg-gray-50 p-8 rounded-xl shadow-md card-hover transition">
+                    <div class="text-blue-600 mb-4">
+                        <i class="fas fa-globe text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-800">網路自由</h3>
+                    <p class="text-gray-600">在某些地區，ISP可能會審查或監控DNS查詢。加密DNS可以幫助繞過這種監控，保護您的網路自由。</p>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <div class="card">
-            <h2 class="section-title">支援的協議</h2>
-            <p>我們目前支援 <span class="highlight">DNS over HTTPS (DoH)</span>，您可以使用以下地址進行連接：</p>
-            <div class="code-snippet">https://doh.avpclub.uk/dns-query</div>
+    <!-- DNS工作原理 -->
+    <section id="how" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">DNS加密如何運作？</h2>
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0">
+                    <div class="bg-white p-6 rounded-xl shadow-lg">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-red-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-times text-red-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-800">傳統DNS</h3>
+                                <p class="text-sm text-gray-500">明文傳輸，易受監控</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="bg-gray-200 rounded-full w-4 h-4 mt-1 mr-3"></div>
+                                <p>您的設備 → ISP → 根伺服器 → 頂級域名伺服器 → 權威伺服器</p>
+                            </div>
+                            <div class="border-l-2 border-gray-300 pl-4 ml-2">
+                                <p class="text-gray-600">每一步查詢都是明文的，ISP和網路運營商可以看到您訪問的所有網站</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-lg mt-8">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-green-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-check text-green-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold text-gray-800">加密DNS</h3>
+                                <p class="text-sm text-gray-500">安全傳輸，保護隱私</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="bg-blue-200 rounded-full w-4 h-4 mt-1 mr-3"></div>
+                                <p>您的設備 → 加密通道 → DNS解析器 → 目標網站</p>
+                            </div>
+                            <div class="border-l-2 border-blue-300 pl-4 ml-2">
+                                <p class="text-gray-600">使用DoH (DNS over HTTPS) 或 DoT (DNS over TLS) 技術加密所有查詢</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 md:pl-12">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">DNS加密技術比較</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white rounded-lg overflow-hidden">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="py-3 px-4 text-left">技術</th>
+                                    <th class="py-3 px-4 text-left">協議</th>
+                                    <th class="py-3 px-4 text-left">端口</th>
+                                    <th class="py-3 px-4 text-left">隱私性</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr>
+                                    <td class="py-3 px-4">傳統DNS</td>
+                                    <td class="py-3 px-4">UDP</td>
+                                    <td class="py-3 px-4">53</td>
+                                    <td class="py-3 px-4"><span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs">無</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4">DNS over TLS (DoT)</td>
+                                    <td class="py-3 px-4">TCP</td>
+                                    <td class="py-3 px-4">853</td>
+                                    <td class="py-3 px-4"><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">高</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4">DNS over HTTPS (DoH)</td>
+                                    <td class="py-3 px-4">HTTP/2</td>
+                                    <td class="py-3 px-4">443</td>
+                                    <td class="py-3 px-4"><span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs">高</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-8 bg-blue-50 p-6 rounded-lg border border-blue-100">
+                        <h4 class="font-semibold text-blue-800 mb-3"><i class="fas fa-lightbulb mr-2"></i>小知識</h4>
+                        <p class="text-blue-700">DoH (DNS over HTTPS) 因為使用標準的443端口，與普通HTTPS流量混合，更難被識別和封鎖，提供了更好的隱藏性。</p>
+                    </div>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <div class="card">
-            <h2 class="section-title">過濾器規则</h2>
-            <p>我們使用以下過濾器規則來阻擋廣告、惡意軟體和其他不必要的內容：</p>
-            <ul>
-                <li><a href="https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt">AdGuard Simplified Domain Names filter</a></li>
-                <li><a href="https://1hos.cf/mini/">1hos.cf Mini Filter</a></li>
-                <li><a href="https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts">StevenBlack's Hosts</a></li>
-                <li><a href="https://raw.githubusercontent.com/vokins/yhosts/master/hosts">dns-blocklists</a></li>
-                <li><a href="https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext">Peter Lowe's Adservers</a></li>
-                <li><a href="https://filter.futa.gg/TW165-redirect.txt">TW165-redirect</a></li>
-                <li><a href="https://filter.futa.gg/hosts_abp.txt">futa hosts_abp</a></li>
-            </ul>
+    <!-- 如何保護自己 -->
+    <section id="protect" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">如何保護您的DNS查詢？</h2>
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-indigo-50 rounded-xl p-8 mb-8">
+                    <div class="flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/3 mb-6 md:mb-0 flex justify-center">
+                            <div class="bg-white p-4 rounded-full shadow-lg">
+                                <i class="fas fa-mobile-alt text-indigo-600 text-5xl"></i>
+                            </div>
+                        </div>
+                        <div class="md:w-2/3 md:pl-8">
+                            <h3 class="text-2xl font-semibold text-gray-800 mb-3">1. 使用支持DNS加密的瀏覽器</h3>
+                            <p class="text-gray-600 mb-4">現代瀏覽器如Firefox、Chrome和Edge都內置了DNS over HTTPS (DoH) 支持。</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-white px-3 py-1 rounded-full text-sm font-medium shadow-sm">Firefox</span>
+                                <span class="bg-white px-3 py-1 rounded-full text-sm font-medium shadow-sm">Chrome</span>
+                                <span class="bg-white px-3 py-1 rounded-full text-sm font-medium shadow-sm">Edge</span>
+                                <span class="bg-white px-3 py-1 rounded-full text-sm font-medium shadow-sm">Brave</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <h3>黑名單 (Blacklist)</h3>
-            <ul>
-                <li>api.mousegesturesapi.com</li>
-            </ul>
+                <div class="bg-blue-50 rounded-xl p-8 mb-8">
+                    <div class="flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/3 mb-6 md:mb-0 flex justify-center">
+                            <div class="bg-white p-4 rounded-full shadow-lg">
+                                <i class="fas fa-server text-blue-600 text-5xl"></i>
+                            </div>
+                        </div>
+                        <div class="md:w-2/3 md:pl-8">
+                            <h3 class="text-2xl font-semibold text-gray-800 mb-3">2. 使用隱私導向的DNS解析器</h3>
+                            <p class="text-gray-600 mb-4">這些服務提供加密DNS查詢，且承諾不記錄您的查詢日誌：</p>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                <a href="#" class="bg-white px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition text-center">
+                                    <div class="font-medium text-blue-600">Cloudflare</div>
+                                    <div class="text-xs text-gray-500">1.1.1.1</div>
+                                </a>
+                                <a href="#" class="bg-white px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition text-center">
+                                    <div class="font-medium text-blue-600">Google</div>
+                                    <div class="text-xs text-gray-500">8.8.8.8</div>
+                                </a>
+                                <a href="#" class="bg-white px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition text-center">
+                                    <div class="font-medium text-blue-600">Quad9</div>
+                                    <div class="text-xs text-gray-500">9.9.9.9</div>
+                                </a>
+                                <a href="#" class="bg-white px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition text-center">
+                                    <div class="font-medium text-blue-600">OpenDNS</div>
+                                    <div class="text-xs text-gray-500">208.67.222.222</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-purple-50 rounded-xl p-8">
+                    <div class="flex flex-col md:flex-row items-center">
+                        <div class="md:w-1/3 mb-6 md:mb-0 flex justify-center">
+                            <div class="bg-white p-4 rounded-full shadow-lg">
+                                <i class="fas fa-network-wired text-purple-600 text-5xl"></i>
+                            </div>
+                        </div>
+                        <div class="md:w-2/3 md:pl-8">
+                            <h3 class="text-2xl font-semibold text-gray-800 mb-3">3. 在路由器級別啟用DNS加密</h3>
+                            <p class="text-gray-600 mb-4">這樣可以保護連接到您家庭網路的所有設備，而不需要單獨配置每台設備。</p>
+                            <div class="bg-white p-4 rounded-lg mb-4">
+                                <h4 class="font-medium text-purple-800 mb-2">設置步驟：</h4>
+                                <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                                    <li>登入您的路由器管理界面</li>
+                                    <li>找到網路或WAN設置</li>
+                                    <li>將DNS伺服器更改為加密DNS提供商（如1.1.1.1或8.8.8.8）</li>
+                                    <li>保存設置並重啟路由器</li>
+                                </ol>
+                            </div>
+                            <button class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition flex items-center">
+                                <i class="fas fa-book mr-2"></i> 查看詳細指南
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </section>
 
-        <div class="card">
-            <h2 class="section-title">開始使用</h2>
-            <p>要使用我們的 DNS over HTTPS 服務，請將您的設備或瀏覽器的 DNS 設置更改為：</p>
-            <div class="code-snippet">https://doh.avpclub.uk/dns-query</div>
-            <p>如需詳細設置指南，請參考您的設備或瀏覽器的官方文件。</p>
+    <!-- 檢查工具 -->
+    <section class="py-16 bg-gray-900 text-white">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold mb-6">檢查您的DNS是否已加密</h2>
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">使用我們的工具快速檢測您的網路連接是否使用了加密DNS</p>
+            
+            <div class="bg-gray-800 rounded-xl p-8 max-w-2xl mx-auto">
+                <div class="flex justify-center mb-6">
+                    <div class="relative w-full max-w-md">
+                        <input type="text" placeholder="輸入網址測試 (例如: example.com)" class="w-full px-6 py-4 rounded-full bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button class="absolute right-2 top-2 bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition">
+                            測試 <i class="fas fa-search ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="testResult" class="hidden bg-gray-700 p-6 rounded-lg text-left">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-500 rounded-full w-4 h-4 mr-3"></div>
+                        <h3 class="text-xl font-semibold">測試結果</h3>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <p class="text-gray-400">DNS協議</p>
+                            <p class="font-medium">DNS over HTTPS (DoH)</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-400">DNS伺服器</p>
+                            <p class="font-medium">Cloudflare (1.1.1.1)</p>
+                        </div>
+                    </div>
+                    <div class="bg-green-900 bg-opacity-30 p-4 rounded-lg border border-green-800">
+                        <i class="fas fa-check-circle text-green-400 mr-2"></i>
+                        <span>您的DNS查詢已加密，隱私受到保護！</span>
+                    </div>
+                </div>
+                
+                <button id="runTestBtn" class="mt-6 bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition font-medium w-full max-w-xs mx-auto flex items-center justify-center">
+                    <i class="fas fa-play mr-3"></i> 立即運行測試
+                </button>
+            </div>
         </div>
+    </section>
 
-        <div class="card">
-            <h2 class="section-title">聯絡我們</h2>
-            <p> 如果您有任何問題或建議，請通過以下方式聯絡我們：</p>
-            <!-- 方法1: 分散顯示 -->
-            <p class="email-protection">
-                <span>dns.github@</span>
-                <span class="invisible">not-real-domain</span>
-                <span>slmail.me</span>
-            </p>
+    <!-- 常見問題 -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">常見問題</h2>
+            <div class="max-w-3xl mx-auto space-y-4">
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <button class="faq-question w-full px-6 py-4 text-left font-medium text-gray-800 bg-gray-50 hover:bg-gray-100 transition flex justify-between items-center">
+                        <span>DNS加密會降低我的網路速度嗎？</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer px-6 py-4 bg-white hidden">
+                        <p class="text-gray-600">現代加密DNS解決方案經過優化，對大多數用戶來說速度影響微乎其微。實際上，由於使用了更高效的解析器和更近的伺服器節點，有時甚至可能比傳統DNS更快。</p>
+                    </div>
+                </div>
+                
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <button class="faq-question w-full px-6 py-4 text-left font-medium text-gray-800 bg-gray-50 hover:bg-gray-100 transition flex justify-between items-center">
+                        <span>使用加密DNS是否合法？</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer px-6 py-4 bg-white hidden">
+                        <p class="text-gray-600">在大多數國家和地區，使用加密DNS是完全合法的。它只是保護您的隱私的一種技術手段，就像使用HTTPS而不是HTTP一樣。不過，某些國家可能對特定DNS提供商有限制，請遵守當地法律法規。</p>
+                    </div>
+                </div>
+                
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <button class="faq-question w-full px-6 py-4 text-left font-medium text-gray-800 bg-gray-50 hover:bg-gray-100 transition flex justify-between items-center">
+                        <span>我如何知道我的DNS是否已加密？</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer px-6 py-4 bg-white hidden">
+                        <p class="text-gray-600">您可以使用本頁面提供的測試工具，或訪問像<a href="https://www.cloudflare.com/ssl/encrypted-sni/" class="text-blue-600 hover:underline">Cloudflare的檢查頁面</a>來驗證您的DNS是否已加密。此外，在瀏覽器設置中也可以查看是否啟用了DoH或DoT。</p>
+                    </div>
+                </div>
+                
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <button class="faq-question w-full px-6 py-4 text-left font-medium text-gray-800 bg-gray-50 hover:bg-gray-100 transition flex justify-between items-center">
+                        <span>加密DNS能否阻止所有網路監控？</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer px-6 py-4 bg-white hidden">
+                        <p class="text-gray-600">DNS加密可以防止第三方監控您的DNS查詢，但其他網路活動仍可能被觀察到。為了全面保護隱私，建議結合使用VPN、HTTPS和良好的瀏覽習慣。</p>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <!-- 行動呼籲 -->
+    <section class="py-16 bg-blue-600 text-white">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold mb-6">現在就保護您的網路隱私！</h2>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">只需幾分鐘設置，就能大幅提升您的網路安全和隱私保護等級</p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <button class="bg-white text-blue-600 font-bold px-8 py-3 rounded-full hover:bg-gray-100 transition transform hover:scale-105">
+                    獲取設置指南 <i class="fas fa-download ml-2"></i>
+                </button>
+                <button class="border-2 border-white text-white font-bold px-8 py-3 rounded-full hover:bg-white hover:text-blue-600 transition transform hover:scale-105">
+                    分享給朋友 <i class="fas fa-share-alt ml-2"></i>
+                </button>
+            </div>
+            <div class="mt-8">
+                <a href="https://github.com/Lawlietr/avpclub.github.io" target="_blank" class="inline-flex items-center text-white hover:text-gray-200 transition">
+                    <i class="fab fa-github text-2xl mr-2"></i>
+                    <span>查看GitHub項目主頁</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 頁腳 -->
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-lock text-blue-400 text-xl"></i>
+                        <span class="text-white font-bold text-lg">DNS隱私保護</span>
+                    </div>
+                    <p class="text-sm">我們致力於推廣網路隱私和安全意識，幫助用戶在數位時代保護自己的數據和隱私。</p>
+                </div>
+                <div>
+                    <h4 class="text-white font-medium mb-4">快速連結</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white transition">首頁</a></li>
+                        <li><a href="#why" class="hover:text-white transition">為什麼重要</a></li>
+                        <li><a href="#how" class="hover:text-white transition">技術原理</a></li>
+                        <li><a href="#protect" class="hover:text-white transition">保護指南</a></li>
+                        <li><a href="https://github.com/Lawlietr/avpclub.github.io" target="_blank" class="hover:text-white transition flex items-center">
+                            <i class="fab fa-github mr-1"></i> 項目主頁
+                        </a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-medium mb-4">資源</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white transition">常見問題</a></li>
+                        <li><a href="#" class="hover:text-white transition">部落格</a></li>
+                        <li><a href="#" class="hover:text-white transition">研究報告</a></li>
+                        <li><a href="#" class="hover:text-white transition">工具下載</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-medium mb-4">聯繫我們</h4>
+                    <div class="flex space-x-4 mb-4">
+                        <a href="#" class="text-blue-400 hover:text-white transition"><i class="fab fa-twitter text-xl"></i></a>
+                        <a href="https://github.com/Lawlietr/avpclub.github.io" target="_blank" class="text-blue-400 hover:text-white transition"><i class="fab fa-github text-xl"></i></a>
+                        <a href="#" class="text-blue-400 hover:text-white transition"><i class="fab fa-telegram text-xl"></i></a>
+                    </div>
+                    <p class="text-sm">訂閱我們的電子報，獲取最新隱私保護資訊</p>
+                    <div class="mt-3 flex">
+                        <input type="email" placeholder="您的電子郵件" class="px-4 py-2 rounded-l-lg bg-gray-800 text-white focus:outline-none w-full">
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-r-lg hover:bg-blue-700 transition">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-sm text-center">
+                <p>© 2023 DNS隱私保護倡議。所有權利保留。</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 測試按鈕功能
+        document.getElementById('runTestBtn').addEventListener('click', function() {
+            const testResult = document.getElementById('testResult');
+            this.innerHTML = '<i class="fas fa-spinner fa-spin mr-3"></i> 測試中...';
+            this.disabled = true;
+            
+            // 模擬測試過程
+            setTimeout(() => {
+                testResult.classList.remove('hidden');
+                this.innerHTML = '<i class="fas fa-redo mr-3"></i> 重新測試';
+                this.disabled = false;
+            }, 1500);
+        });
+        
+        // 常見問題切換
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const icon = question.querySelector('i');
+                
+                answer.classList.toggle('hidden');
+                icon.classList.toggle('rotate-180');
+            });
+        });
+        
+        // 平滑滾動
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>

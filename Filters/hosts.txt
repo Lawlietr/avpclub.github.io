@@ -24,4 +24,4 @@
 ||sch.line.me^
 ||extensionpay.com^
 ||api.mousegesturesapi.com^$important
-||https://mvdis-i.nvestigate-tw.zyphora.bond
+||mvdis-i.nvestigate-tw.zyphora.bond^

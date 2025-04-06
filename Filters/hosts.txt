@@ -1,5 +1,5 @@
 ! Title: DoH.AVPClub.uk DNS Filterlist
-! Version: 2025.0403-1
+! Version: 2025.0406-1
 ! Expires: 1 day
 ! Homepage: https://github.com/Lawlietr/avpclub.github.io
 !
@@ -24,3 +24,4 @@
 ||sch.line.me^
 ||extensionpay.com^
 ||api.mousegesturesapi.com^$important
+||https://mvdis-i.nvestigate-tw.zyphora.bond

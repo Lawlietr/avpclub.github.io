@@ -25,3 +25,7 @@
 ||extensionpay.com^
 ||api.mousegesturesapi.com^$important
 ||mvdis-i.nvestigate-tw.zyphora.bond^
+!
+! Below it's white list
+!
+@@||t.co^$important

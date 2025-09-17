@@ -24,26 +24,12 @@ https://doh.avpclub.uk/dns-query
 - [AdGuard Simplified Domain Names filter](https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt)
 - [1hos.cf Mini Filter](https://1hos.cf/mini/)
 - [StevenBlack's Hosts](https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts)
-- [dns-blocklists](https://raw.githubusercontent.com/vokins/yhosts/master/hosts)
+- [HaGeZi's Pro DNS Blocklist](https://codeberg.org/hagezi/mirror2/raw/branch/main/dns-blocklists/adblock/pro.txt)
 - [Peter Lowe's Adservers](https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext)
 - [TW165-redirect](https://filter.futa.gg/TW165-redirect.txt)
 - [futa hosts_abp](https://filter.futa.gg/hosts_abp.txt)
+- [DoH.AVPClub.uk DNS Filterlist](https://github.com/Lawlietr/avpclub.github.io/blob/main/Filters/hosts.txt)
 
-## 白名單 (Whitelist)
-
-以下域名已被列入白名單，確保它們不會被過濾器阻擋：
-
-```
-（目前無白名單項目）
-```
-
-## 黑名單 (Blacklist)
-
-以下域名已被列入黑名單，它們會被過濾器阻擋：
-
-```
-api.mousegesturesapi.com
-```
 
 ## 如何開始使用
 

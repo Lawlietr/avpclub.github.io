@@ -1,5 +1,5 @@
 ! Title: DoH.AVPClub.uk DNS Filterlist
-! Version: 2025.0520-1
+! Version: 2025.0917-1
 ! Expires: 1 day
 ! Homepage: https://github.com/Lawlietr/avpclub.github.io
 !
@@ -29,3 +29,9 @@
 ! Below it's white list
 !
 @@||t.co^$important
+# Our own domains of .dpdns.org
+@@||lawatch.dpdns.org^
+@@||avpclub.dpdns.org^
+@@||larch.dpdns.org^
+@@||latech.dpdns.org^
+# Our own domains of .dpdns.org

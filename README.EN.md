@@ -19,22 +19,12 @@ We use the following filter rules to block advertisements, malware, and other un
 - [AdGuard Simplified Domain Names filter](https://adguardteam.github.io/AdGuardSDNSFilter/Filters/filter.txt)
 - [1hos.cf Mini Filter](https://1hos.cf/mini/)
 - [StevenBlack's Hosts](https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts)
-- [dns-blocklists](https://raw.githubusercontent.com/vokins/yhosts/master/hosts)
+- [HaGeZi's Pro DNS Blocklist](https://codeberg.org/hagezi/mirror2/raw/branch/main/dns-blocklists/adblock/pro.txt)
 - [Peter Lowe's Adservers](https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext)
 - [TW165-redirect](https://filter.futa.gg/TW165-redirect.txt)
 - [futa hosts_abp](https://filter.futa.gg/hosts_abp.txt)
+- [DoH.AVPClub.uk DNS Filterlist](https://github.com/Lawlietr/avpclub.github.io/blob/main/Filters/hosts.txt)
 
-## Whitelist
-The following domains are whitelisted to ensure they are not blocked by filters:
-```
-(Currently no whitelist entries)
-```
-
-## Blacklist
-The following domains are blacklisted and will be blocked by filters:
-```
-api.mousegesturesapi.com
-```
 
 ## How to Start Using
 To use our DNS over HTTPS service, change your device or browser's DNS settings to:

@@ -3,504 +3,1084 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>保護您的數位隱私 - DNS加密的重要性</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        dark: {
-                            100: '#E5E7EB',
-                            200: '#D1D5DB',
-                            300: '#9CA3AF',
-                            400: '#6B7280',
-                            500: '#4B5563',
-                            600: '#374151',
-                            700: '#1F2937',
-                            800: '#111827',
-                            900: '#0F172A',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>DoH.avpclub.uk - 免費DNS加密服務</title>
     <style>
-        .hero-gradient {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #93c5fd 100%);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .dark .hero-gradient {
-            background: linear-gradient(135deg, #0F172A 0%, #1E3A8A 50%, #3B82F6 100%);
+
+        :root {
+            --primary: #00d4ff;
+            --primary-dark: #0099cc;
+            --secondary: #6c5ce7;
+            --bg-dark: #0a0e17;
+            --bg-card: #151b2b;
+            --bg-lighter: #1e2538;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --gradient: linear-gradient(135deg, #00d4ff 0%, #6c5ce7 100%);
+            --gradient-text: linear-gradient(135deg, #00d4ff 0%, #6c5ce7 100%);
         }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
-        .dark .card-hover:hover {
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
-        .animate-bounce-slow {
-            animation: bounce-slow 3s infinite;
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 14, 23, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
         }
-        @keyframes bounce-slow {
-            0%, 100% {
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .hero {
+            padding: 150px 0 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .hero .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .hero .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
                 transform: translateY(0);
             }
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            background: var(--gradient-text);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .comparison-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .comparison-card.traditional {
+            border: 2px solid #ef4444;
+        }
+
+        .comparison-card.doh {
+            border: 2px solid var(--primary);
+        }
+
+        .comparison-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .comparison-card.traditional h3 {
+            color: #ef4444;
+        }
+
+        .comparison-card.doh h3 {
+            color: var(--primary);
+        }
+
+        .comparison-list {
+            list-style: none;
+            text-align: left;
+            margin-top: 1.5rem;
+        }
+
+        .comparison-list li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .comparison-card.traditional .comparison-list li::before {
+            content: '✗';
+            color: #ef4444;
+        }
+
+        .comparison-card.doh .comparison-list li::before {
+            content: '✓';
+            color: var(--primary);
+        }
+
+        .tech-demo {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 16px;
+            margin-top: 2rem;
+        }
+
+        .tech-diagram {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            padding: 2rem 0;
+        }
+
+        .tech-step {
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .tech-step .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .tech-step h4 {
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .tech-step p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .arrow {
+            font-size: 2rem;
+            color: var(--primary);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.5;
+            }
             50% {
-                transform: translateY(-10px);
+                opacity: 1;
             }
         }
-        .theme-toggle {
-            transition: all 0.3s ease;
+
+        .setup-guide {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 16px;
+            margin-top: 2rem;
         }
-        .theme-toggle:hover {
-            transform: scale(1.1);
+
+        .setup-item {
+            background: var(--bg-card);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            transition: border-color 0.3s;
         }
-        .dark .dark\:bg-dark-800 {
-            background-color: #111827;
+
+        .setup-item:hover {
+            border-color: var(--primary);
         }
-        .dark .dark\:bg-dark-700 {
-            background-color: #1F2937;
+
+        .setup-header {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: background 0.3s;
         }
-        .dark .dark\:bg-dark-900 {
-            background-color: #0F172A;
+
+        .setup-header:hover {
+            background: var(--bg-lighter);
         }
-        .dark .dark\:text-white {
-            color: #FFFFFF;
+
+        .device-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
         }
-        .dark .dark\:text-gray-300 {
-            color: #D1D5DB;
+
+        .setup-header h4 {
+            margin: 0;
+            color: var(--text);
+            font-size: 1.3rem;
         }
-        .dark .dark\:border-dark-600 {
-            border-color: #374151;
+
+        .arrow-icon {
+            margin-left: auto;
+            transition: transform 0.3s;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .setup-item.active .arrow-icon {
+            transform: rotate(180deg);
+        }
+
+        .setup-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .setup-item.active .setup-body {
+            max-height: 500px;
+        }
+
+        .setup-body .step-content {
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        .step-content h4 {
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .step-content p {
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .code-block {
+            background: var(--bg-dark);
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .code-block code {
+            color: var(--primary);
+        }
+
+        .ios-download {
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .ios-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .faq {
+            margin-top: 3rem;
+        }
+
+        .faq-item {
+            background: var(--bg-card);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+
+        .faq-question:hover {
+            background: var(--bg-lighter);
+        }
+
+        .faq-question h4 {
+            margin: 0;
+            color: var(--text);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            padding: 0 1.5rem;
+        }
+
+        .faq-answer p {
+            padding: 1rem 0;
+            color: var(--text-muted);
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-item.active .arrow-icon {
+            transform: rotate(180deg);
+        }
+
+        .arrow-icon {
+            transition: transform 0.3s;
+            color: var(--primary);
+        }
+
+        .github-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .github-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .github-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .github-card .github-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .github-card h3 {
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .github-card p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .github-card a {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .github-card a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        footer {
+            background: var(--bg-card);
+            padding: 3rem 0;
+            margin-top: 5rem;
+            text-align: center;
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        footer p {
+            color: var(--text-muted);
+        }
+
+        .service-url {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            word-break: break-all;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 2px solid var(--primary);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 255, 128, 0.1);
+            color: #00ff80;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff80;
+            border-radius: 50%;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .service-url {
+                font-size: 1.2rem;
+            }
+
+            .arrow {
+                transform: rotate(90deg);
+            }
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
-<body class="font-sans bg-gray-50 dark:bg-dark-800 dark:text-white transition-colors duration-300">
-    <!-- 導航欄 -->
-    <nav class="bg-white dark:bg-dark-700 shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <i class="fas fa-lock text-blue-600 dark:text-blue-400 text-2xl"></i>
-                <span class="text-xl font-bold text-gray-800 dark:text-white">DoH.AVPClub.uk隱私保護</span>
-            </div>
-            <div class="hidden md:flex space-x-8 items-center">
-                <a href="#why" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">為什麼重要</a>
-                <a href="#how" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">如何運作</a>
-                <a href="#protect" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition">保護自己</a>
-                <a href="https://github.com/Lawlietr/avpclub.github.io" target="_blank" class="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition flex items-center">
-                    <i class="fab fa-github mr-1"></i> 項目主頁
-                </a>
-                <button id="themeToggle" class="theme-toggle ml-4 p-2 rounded-full bg-gray-100 dark:bg-dark-600 text-gray-700 dark:text-yellow-300">
-                    <i class="fas fa-sun hidden"></i>
-                    <i class="fas fa-moon hidden"></i>
-                </button>
-            </div>
-            <button class="md:hidden text-gray-600 dark:text-gray-300">
-                <i class="fas fa-bars text-xl"></i>
-            </button>
+<body>
+    <nav>
+        <div class="container">
+            <div class="logo">🔐 DoH.avpclub.uk</div>
+            <ul class="nav-links">
+                <li><a href="#privacy">隱私</a></li>
+                <li><a href="#technology">技術</a></li>
+                <li><a href="#setup">設定</a></li>
+                <li><a href="#faq">常見問題</a></li>
+                <li><a href="#github">GitHub</a></li>
+            </ul>
         </div>
     </nav>
-    <!-- 英雄區域 -->
-    <section class="hero-gradient text-white py-20">
-        <div class="container mx-auto px-6 text-center">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6 animate-bounce-slow">您的DNS查詢安全嗎？</h1>
-            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">在數位時代，DNS加密是保護您網路隱私的第一道防線</p>
-            <div class="flex flex-col md:flex-row justify-center gap-4">
+
+    <section class="hero">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <h1 style="font-size: 4rem; font-weight: 800; margin-bottom: 1rem; background: var(--gradient-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">DoH.avpclub.uk</h1>
+                <p style="font-size: 2rem; font-weight: 600; color: var(--primary); margin-bottom: 2rem;">隱匿您的 DNS 網足跡</p>
             </div>
-        </div>
-    </section>
-    <!-- 為什麼DNS加密重要 -->
-    <section id="why" class="py-16 bg-white dark:bg-dark-700">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center text-gray-800 dark:text-white mb-12">為什麼DNS加密如此重要？</h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-gray-50 dark:bg-dark-600 p-8 rounded-xl shadow-md card-hover transition">
-                    <div class="text-blue-600 dark:text-blue-400 mb-4">
-                        <i class="fas fa-user-secret text-4xl"></i>
+            
+            <div style="background: var(--bg-card); padding: 3rem; border-radius: 24px; border: 2px solid var(--gradient); max-width: 900px; margin: 0 auto 3rem; box-shadow: 0 10px 40px rgba(0, 212, 255, 0.15);">
+                <p style="font-size: 1.4rem; line-height: 1.8; color: var(--text); margin-bottom: 2rem; text-align: center;">
+                    免費提供 <strong style="color: var(--primary);">DNS over HTTPS (DoH)</strong> 解析服務。將原本明文的 DNS 請求加密並透過 HTTPS 協議發送，讓您的上網習慣不再暴露給 ISP 或第三方窺探。
+                </p>
+                <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; margin-top: 2rem;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.8rem 1.5rem; background: rgba(0, 212, 255, 0.1); border-radius: 50px; border: 1px solid rgba(0, 212, 255, 0.2);">
+                        <span style="font-size: 1.2rem;">🔓</span>
+                        <span style="font-weight: 600; color: var(--primary);">完全自由</span>
                     </div>
-                    <h3 class="text-xl font-semibold mb-3 text-gray-800 dark:text-white">隱私保護</h3>
-                    <p class="text-gray-600 dark:text-gray-300">傳統DNS查詢是明文的，就像寄送明信片一樣，任何人都可以看到您訪問的網站。加密DNS確保您的瀏覽歷史只屬於您自己。</p>
-                </div>
-                <div class="bg-gray-50 dark:bg-dark-600 p-8 rounded-xl shadow-md card-hover transition">
-                    <div class="text-blue-600 dark:text-blue-400 mb-4">
-                        <i class="fas fa-shield-alt text-4xl"></i>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.8rem 1.5rem; background: rgba(108, 92, 231, 0.1); border-radius: 50px; border: 1px solid rgba(108, 92, 231, 0.2);">
+                        <span style="font-size: 1.2rem;">👤</span>
+                        <span style="font-weight: 600; color: var(--secondary);">無需註冊</span>
                     </div>
-                    <h3 class="text-xl font-semibold mb-3 text-gray-800 dark:text-white">安全防護</h3>
-                    <p class="text-gray-600 dark:text-gray-300">DNS加密防止中間人攻擊和DNS劫持，確保您連接到的是真正的網站，而不是惡意偽造的釣魚網站。</p>
-                </div>
-                <div class="bg-gray-50 dark:bg-dark-600 p-8 rounded-xl shadow-md card-hover transition">
-                    <div class="text-blue-600 dark:text-blue-400 mb-4">
-                        <i class="fas fa-globe text-4xl"></i>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.8rem 1.5rem; background: rgba(0, 255, 128, 0.1); border-radius: 50px; border: 1px solid rgba(0, 255, 128, 0.2);">
+                        <span style="font-size: 1.2rem;">🛡️</span>
+                        <span style="font-weight: 600; color: #00ff80;">不收集資料</span>
                     </div>
-                    <h3 class="text-xl font-semibold mb-3 text-gray-800 dark:text-white">網路自由</h3>
-                    <p class="text-gray-600 dark:text-gray-300">在某些地區，ISP可能會審查或監控DNS查詢。加密DNS可以幫助繞過這種監控，保護您的網路自由。</p>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.8rem 1.5rem; background: rgba(255, 255, 255, 0.1); border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.2);">
+                        <span style="font-size: 1.2rem;">⚡</span>
+                        <span style="font-weight: 600; color: var(--text);">隨時啟用</span>
+                    </div>
                 </div>
             </div>
+            
+            <a href="#setup" class="cta-button">開始使用</a>
         </div>
     </section>
-    <!-- DNS工作原理 -->
-    <section id="how" class="py-16 bg-gray-50 dark:bg-dark-600">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center text-gray-800 dark:text-white mb-12">DNS加密如何運作？</h2>
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 mb-8 md:mb-0">
-                    <div class="bg-white dark:bg-dark-700 p-6 rounded-xl shadow-lg">
-                        <div class="flex items-center mb-4">
-                            <div class="bg-red-100 dark:bg-red-900 p-3 rounded-full mr-4">
-                                <i class="fas fa-times text-red-500 dark:text-red-400 text-xl"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-gray-800 dark:text-white">傳統DNS</h3>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">明文傳輸，易受監控</p>
-                            </div>
-                        </div>
-                        <div class="space-y-4">
-                            <div class="flex items-start">
-                                <div class="bg-gray-200 dark:bg-gray-500 rounded-full w-4 h-4 mt-1 mr-3"></div>
-                                <p class="dark:text-gray-300">您的設備 → ISP → 根伺服器 → 頂級域名伺服器 → 權威伺服器</p>
-                            </div>
-                            <div class="border-l-2 border-gray-300 dark:border-gray-500 pl-4 ml-2">
-                                <p class="text-gray-600 dark:text-gray-400">每一步查詢都是明文的，ISP和網路運營商可以看到您訪問的所有網站</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-white dark:bg-dark-700 p-6 rounded-xl shadow-lg mt-8">
-                        <div class="flex items-center mb-4">
-                            <div class="bg-green-100 dark:bg-green-900 p-3 rounded-full mr-4">
-                                <i class="fas fa-check text-green-500 dark:text-green-400 text-xl"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-semibold text-gray-800 dark:text-white">加密DNS</h3>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">安全傳輸，保護隱私</p>
-                            </div>
-                        </div>
-                        <div class="space-y-4">
-                            <div class="flex items-start">
-                                <div class="bg-blue-200 dark:bg-blue-500 rounded-full w-4 h-4 mt-1 mr-3"></div>
-                                <p class="dark:text-gray-300">您的設備 → 加密通道 → DNS解析器 → 目標網站</p>
-                            </div>
-                            <div class="border-l-2 border-blue-300 dark:border-blue-500 pl-4 ml-2">
-                                <p class="text-gray-600 dark:text-gray-400">使用DoH (DNS over HTTPS) 或 DoT (DNS over TLS) 技術加密所有查詢</p>
-                            </div>
-                        </div>
-                    </div>
+
+    <section id="privacy">
+        <div class="container">
+            <h2 class="section-title scroll-reveal">為什麼DNS隱私至關重要？</h2>
+            
+            <p class="scroll-reveal" style="text-align: center; color: var(--text-muted); max-width: 800px; margin: 0 auto 3rem;">
+                DNS（網域名稱系統）是互聯網的核心基礎設施，負責將網域名稱轉換為IP位址。然而，傳統的DNS查詢是以明文形式傳輸的，這意味著您的每一個瀏覽動作都可能被第三方監控和記錄。了解DNS隱私的重要性，是保護個人數位生活的第一步。
+            </p>
+            
+            <div class="features-grid">
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon">👁️</div>
+                    <h3>ISP監控您的網路活動</h3>
+                    <p>您的網際網路服務供應商（ISP）可以直接查看您造訪的所有網站，即使該網站使用HTTPS加密。由於瀏覽器不會加密DNS查詢，ISP能夠精確記錄您的瀏覽習慣、觀看的內容、瀏覽的時長，甚至是您在瀏覽器中輸入的每個關鍵字。這些資料可能被用於商業分析、行銷推廣，甚至被出售給第三方。</p>
                 </div>
-                <div class="md:w-1/2 md:pl-12">
-                    <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-4">DNS加密技術比較</h3>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full bg-white dark:bg-dark-700 rounded-lg overflow-hidden">
-                            <thead class="bg-gray-100 dark:bg-dark-600">
-                                <tr>
-                                    <th class="py-3 px-4 text-left dark:text-white">技術</th>
-                                    <th class="py-3 px-4 text-left dark:text-white">協議</th>
-                                    <th class="py-3 px-4 text-left dark:text-white">端口</th>
-                                    <th class="py-3 px-4 text-left dark:text-white">隱私性</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200 dark:divide-dark-500">
-                                <tr>
-                                    <td class="py-3 px-4 dark:text-gray-300">傳統DNS</td>
-                                    <td class="py-3 px-4 dark:text-gray-300">UDP</td>
-                                    <td class="py-3 px-4 dark:text-gray-300">53</td>
-                                    <td class="py-3 px-4"><span class="bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-400 px-2 py-1 rounded-full text-xs">無</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="py-3 px-4 dark:text-gray-300">DNS over TLS (DoT)</td>
-                                    <td class="py-3 px-4 dark:text-gray-300">TCP</td>
-                                    <td class="py-3 px-4 dark:text-gray-300">853</td>
-                                    <td class="py-3 px-4"><span class="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-400 px-2 py-1 rounded-full text-xs">高</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="py-3 px-4 dark:text-gray-300">DNS over HTTPS (DoH)</td>
-                                    <td class="py-3 px-4 dark:text-gray-300">HTTP/2</td>
-                                    <td class="py-3 px-4 dark:text-gray-300">443</td>
-                                    <td class="py-3 px-4"><span class="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-400 px-2 py-1 rounded-full text-xs">高</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="mt-8 bg-blue-50 dark:bg-blue-900 p-6 rounded-lg border border-blue-100 dark:border-blue-800">
-                        <h4 class="font-semibold text-blue-800 dark:text-blue-200 mb-3"><i class="fas fa-lightbulb mr-2"></i>小知識</h4>
-                        <p class="text-blue-700 dark:text-blue-300">DoH (DNS over HTTPS) 因為使用標準的443端口，與普通HTTPS流量混合，更難被識別和封鎖，提供了更好的隱藏性。</p>
-                    </div>
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon">🎯</div>
+                    <h3>惡意廣告與精準追蹤</h3>
+                    <p>第三方廣告平台利用DNS查詢資料建立您的使用者檔案，追蹤您的瀏覽行為、地理位置、年齡層、興趣愛好等。當您造訪任何網站時，廣告商可以在您的IP位址和DNS查詢歷史中找到您的特徵，從而投放高度針對性的廣告。這種做法不僅侵犯隱私，還可能導致您看到敏感或不適當的廣告內容。</p>
+                </div>
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>DNS劫持攻擊風險</h3>
+                    <p>攻擊者可以透過DNS劫持，將您請求的網站重新導向到惡意或仿冒的網站。這些網站可能模仿您常用的銀行、郵件、社交媒體等網站，誘騙您輸入帳號密碼。由於傳統DNS查詢是明文的，中間人攻擊非常容易實現，受害者往往在不知情的情況下洩露敏感資訊。</p>
+                </div>
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon">📊</div>
+                    <h3>供應商出售您的數據</h3>
+                    <p>許多免費DNS服務會收集、分析並出售您的DNS查詢資料。這些資料包含了您瀏覽的網站、查詢的關鍵字、連接時間等敏感資訊。數據被用於行銷、信用評估甚至法律調查。使用加密的DNS服務可以防止這種數據洩漏，讓您的瀏覽行為保持私密。</p>
+                </div>
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon">🗺️</div>
+                    <h3>地理位置追蹤</h3>
+                    <p>通過DNS查詢的時間戳記和頻率，攻擊者可以推測您的地理位置、活動模式和生活習慣。例如，如果您經常在特定時間查詢特定的網站，這可能暗示您的工作時間表或居住地區。結合其他網路流量分析，您可能被追蹤到比想像中更詳細的程度。</p>
+                </div>
+                <div class="feature-card scroll-reveal">
+                    <div class="feature-icon">🔓</div>
+                    <h3>政府監控與審查</h3>
+                    <p>在某些國家，政府可能會監控DNS查詢以實施網路審查政策，攔截被禁網站的訪問請求。即使您不想被監控，也難以完全避免。使用DNS over HTTPS技術可以讓這種監控更加困難，因為DNS查詢被加密，監控者無法知道您正在訪問哪些網站。</p>
                 </div>
             </div>
         </div>
     </section>
-    <!-- 如何保護自己 -->
-    <section id="protect" class="py-16 bg-white dark:bg-dark-700">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center text-gray-800 dark:text-white mb-12">如何保護您的DNS查詢？</h2>
-            <div class="max-w-4xl mx-auto">
-                <div class="bg-indigo-50 dark:bg-indigo-900 rounded-xl p-8 mb-8">
-                    <div class="flex flex-col md:flex-row items-center">
-                        <div class="md:w-1/3 mb-6 md:mb-0 flex justify-center">
-                            <div class="bg-white dark:bg-dark-600 p-4 rounded-full shadow-lg">
-                                <i class="fas fa-mobile-alt text-indigo-600 dark:text-indigo-400 text-5xl"></i>
-                            </div>
-                        </div>
-                        <div class="md:w-2/3 md:pl-8">
-                            <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-3">1. 使用支持DNS加密的瀏覽器</h3>
-                            <p class="text-gray-600 dark:text-gray-300 mb-4">現代瀏覽器如Firefox、Chrome和Edge都內置了DNS over HTTPS (DoH) 支持。</p>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="bg-white dark:bg-dark-600 px-3 py-1 rounded-full text-sm font-medium shadow-sm">Firefox</span>
-                                <span class="bg-white dark:bg-dark-600 px-3 py-1 rounded-full text-sm font-medium shadow-sm">Chrome</span>
-                                <span class="bg-white dark:bg-dark-600 px-3 py-1 rounded-full text-sm font-medium shadow-sm">Edge</span>
-                                <span class="bg-white dark:bg-dark-600 px-3 py-1 rounded-full text-sm font-medium shadow-sm">Brave</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-blue-50 dark:bg-blue-900 rounded-xl p-8 mb-8">
-                    <div class="flex flex-col md:flex-row items-center">
-                        <div class="md:w-1/3 mb-6 md:mb-0 flex justify-center">
-                            <div class="bg-white dark:bg-dark-600 p-4 rounded-full shadow-lg">
-                                <i class="fas fa-server text-blue-600 dark:text-blue-400 text-5xl"></i>
-                            </div>
-                        </div>
-                        <div class="md:w-2/3 md:pl-8">
-                            <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-3">2. 使用隱私導向的DNS解析器</h3>
-                            <p class="text-gray-600 dark:text-gray-300 mb-4">這些服務提供加密DNS查詢，且承諾不記錄您的查詢日誌：</p>
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                <a href="https://adguard-dns.io/zh_tw/public-dns.html" class="bg-white dark:bg-dark-600 px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition text-center">
-                                    <div class="font-medium text-blue-600 dark:text-blue-400">AdGuard</div>
-                                    <div class="text-xs text-gray-500 dark:text-gray-400">1.1.1.1</div>
-                                </a>
-                                <a href="https://developers.cloudflare.com/1.1.1.1/" class="bg-white dark:bg-dark-600 px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition text-center">
-                                    <div class="font-medium text-blue-600 dark:text-blue-400">Cloudflare</div>
-                                    <div class="text-xs text-gray-500 dark:text-gray-400">1.1.1.1</div>
-                                </a>
-                                <a href="https://mullvad.net/en/help/dns-over-https-and-dns-over-tls" class="bg-white dark:bg-dark-600 px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition text-center">
-                                    <div class="font-medium text-blue-600 dark:text-blue-400">Mullvad</div>
-                                    <div class="text-xs text-gray-500 dark:text-gray-400">194.242.2.2</div>
-                                </a>
-                                <a href="https://www.quad9.net/" class="bg-white dark:bg-dark-600 px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition text-center">
-                                    <div class="font-medium text-blue-600 dark:text-blue-400">Quad9</div>
-                                    <div class="text-xs text-gray-500 dark:text-gray-400">9.9.9.9</div>
-                                </a>
-                                <a href="https://nextdns.io/zht" class="bg-white dark:bg-dark-600 px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition text-center">
-                                    <div class="font-medium text-blue-600 dark:text-blue-400">NextDNS</div>
-                                    <div class="text-xs text-gray-500 dark:text-gray-400"></div>
-                                </a>
-                                <a href="https://www.opendns.com/" class="bg-white dark:bg-dark-600 px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition text-center">
-                                    <div class="font-medium text-blue-600 dark:text-blue-400">OpenDNS</div>
-                                    <div class="text-xs text-gray-500 dark:text-gray-400">208.67.222.222</div>
-                                </a>
-                                <a href="https://github.com/Lawlietr/avpclub.github.io" class="bg-white dark:bg-dark-600 px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition text-center">
-                                    <div class="font-medium text-blue-600 dark:text-blue-400">AVPClub.uk</div>
-                                    <div class="text-xs text-gray-500 dark:text-gray-400"></div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-purple-50 dark:bg-purple-900 rounded-xl p-8">
-                    <div class="flex flex-col md:flex-row items-center">
-                        <div class="md:w-1/3 mb-6 md:mb-0 flex justify-center">
-                            <div class="bg-white dark:bg-dark-600 p-4 rounded-full shadow-lg">
-                                <i class="fas fa-network-wired text-purple-600 dark:text-purple-400 text-5xl"></i>
-                            </div>
-                        </div>
-                        <div class="md:w-2/3 md:pl-8">
-                            <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-3">3. 在路由器級別啟用DNS加密</h3>
-                            <p class="text-gray-600 dark:text-gray-300 mb-4">這樣可以保護連接到您家庭網路的所有設備，而不需要單獨配置每台設備。</p>
-                            <div class="bg-white dark:bg-dark-600 p-4 rounded-lg mb-4">
-                                <h4 class="font-medium text-purple-800 dark:text-purple-300 mb-2">設置步驟：</h4>
-                                <ol class="list-decimal list-inside space-y-2 text-gray-700 dark:text-gray-300">
-                                    <li>登入您的路由器管理界面</li>
-                                    <li>找到網路或WAN設置</li>
-                                    <li>將DNS伺服器更改為加密DNS提供商（如1.1.1.1或9.9.9.9）</li>
-                                    <li>保存設置並重啟路由器</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- 常見問題 -->
-    <section class="py-16 bg-white dark:bg-dark-700">
-        <div class="container mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center text-gray-800 dark:text-white mb-12">常見問題</h2>
-            <div class="max-w-3xl mx-auto space-y-4">
-                <div class="border border-gray-200 dark:border-dark-600 rounded-lg overflow-hidden">
-                    <button class="faq-question w-full px-6 py-4 text-left font-medium text-gray-800 dark:text-white bg-gray-50 dark:bg-dark-600 hover:bg-gray-100 dark:hover:bg-dark-500 transition flex justify-between items-center">
-                        <span>DNS加密會降低我的網路速度嗎？</span>
-                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
-                    </button>
-                    <div class="faq-answer px-6 py-4 bg-white dark:bg-dark-700 hidden">
-                        <p class="text-gray-600 dark:text-gray-300">現代加密DNS解決方案經過優化，對大多數用戶來說速度影響微乎其微。實際上，由於使用了更高效的解析器和更近的伺服器節點，有時甚至可能比傳統DNS更快。</p>
-                    </div>
-                </div>
-                <div class="border border-gray-200 dark:border-dark-600 rounded-lg overflow-hidden">
-                    <button class="faq-question w-full px-6 py-4 text-left font-medium text-gray-800 dark:text-white bg-gray-50 dark:bg-dark-600 hover:bg-gray-100 dark:hover:bg-dark-500 transition flex justify-between items-center">
-                        <span>使用加密DNS是否合法？</span>
-                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
-                    </button>
-                    <div class="faq-answer px-6 py-4 bg-white dark:bg-dark-700 hidden">
-                        <p class="text-gray-600 dark:text-gray-300">在大多數國家和地區，使用加密DNS是完全合法的。它只是保護您的隱私的一種技術手段，就像使用HTTPS而不是HTTP一樣。不過，某些國家可能對特定DNS提供商有限制，請遵守當地法律法規。</p>
-                    </div>
-                </div>
-                <div class="border border-gray-200 dark:border-dark-600 rounded-lg overflow-hidden">
-                    <button class="faq-question w-full px-6 py-4 text-left font-medium text-gray-800 dark:text-white bg-gray-50 dark:bg-dark-600 hover:bg-gray-100 dark:hover:bg-dark-500 transition flex justify-between items-center">
-                        <span>我如何知道我的DNS是否已加密？</span>
-                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
-                    </button>
-                    <div class="faq-answer px-6 py-4 bg-white dark:bg-dark-700 hidden">
-                        <p class="text-gray-600 dark:text-gray-300">您可以使用本頁面提供的測試工具，或訪問像<a href="https://www.cloudflare.com/ssl/encrypted-sni/" class="text-blue-600 dark:text-blue-400 hover:underline">Cloudflare的檢查頁面</a>來驗證您的DNS是否已加密。此外，在瀏覽器設置中也可以查看是否啟用了DoH或DoT。</p>
-                    </div>
-                </div>
-                <div class="border border-gray-200 dark:border-dark-600 rounded-lg overflow-hidden">
-                    <button class="faq-question w-full px-6 py-4 text-left font-medium text-gray-800 dark:text-white bg-gray-50 dark:bg-dark-600 hover:bg-gray-100 dark:hover:bg-dark-500 transition flex justify-between items-center">
-                        <span>加密DNS能否阻止所有網路監控？</span>
-                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
-                    </button>
-                    <div class="faq-answer px-6 py-4 bg-white dark:bg-dark-700 hidden">
-                        <p class="text-gray-600 dark:text-gray-300">DNS加密可以防止第三方監控您的DNS查詢，但其他網路活動仍可能被觀察到。為了全面保護隱私，建議結合使用VPN、HTTPS和良好的瀏覽習慣。</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- 行動呼籲 -->
-    <section class="py-16 bg-blue-600 text-white">
-        <div class="container mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold mb-6">現在就保護您的網路隱私！</h2>
-            <p class="text-xl mb-8 max-w-2xl mx-auto">只需幾分鐘設置，就能大幅提升您的網路安全和隱私保護等級</p>
-            <div class="flex flex-col md:flex-row justify-center gap-4">
-            </div>
-            <div class="mt-8">
-                <a href="https://github.com/Lawlietr/avpclub.github.io" target="_blank" class="inline-flex items-center text-white hover:text-gray-200 transition">
-                    <i class="fab fa-github text-2xl mr-2"></i>
-                    <span>查看GitHub項目主頁</span>
-                </a>
-            </div>
-        </div>
-    </section>
-    <!-- 頁腳 -->
-    <footer class="bg-gray-900 text-gray-400 py-12">
-        <div class="container mx-auto px-6">
-            <div class="grid md:grid-cols-4 gap-8">
-                <div>
-                    <div class="flex items-center space-x-2 mb-4">
-                        <i class="fas fa-lock text-blue-400 text-xl"></i>
-                        <span class="text-white font-bold text-lg">DoH.AVPClub.uk隱私保護</span>
-                    </div>
-                    <p class="text-sm">我們致力於推廣網路隱私和安全意識，幫助用戶在數位時代保護自己的數據和隱私。</p>
-                </div>
-                <div>
-                    <h4 class="text-white font-medium mb-4">快速連結</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="hover:text-white transition">首頁</a></li>
-                        <li><a href="#why" class="hover:text-white transition">為什麼重要</a></li>
-                        <li><a href="#how" class="hover:text-white transition">技術原理</a></li>
-                        <li><a href="#protect" class="hover:text-white transition">保護指南</a></li>
-                        <li><a href="https://github.com/Lawlietr/avpclub.github.io" target="_blank" class="hover:text-white transition flex items-center">
-                            <i class="fab fa-github mr-1"></i> 項目主頁
-                        </a></li>
+
+    <section id="technology">
+        <div class="container">
+            <h2 class="section-title scroll-reveal">DNS over HTTPS技術</h2>
+            
+            <div class="comparison scroll-reveal">
+                <div class="comparison-card traditional">
+                    <h3>傳統DNS (UDP)</h3>
+                    <p>明文傳輸，容易被監控和劫持</p>
+                    <ul class="comparison-list">
+                        <li>查詢內容可被任何中間人查看</li>
+                        <li>容易被DNS劫持攻擊</li>
+                        <li>ISP可以記錄所有查詢</li>
+                        <li>無法防止DNS洩漏</li>
                     </ul>
                 </div>
-                <div>
-                    <h4 class="text-white font-medium mb-4">資源</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="hover:text-white transition">常見問題</a></li>
-                        <li><a href="#" class="hover:text-white transition">部落格</a></li>
-                        <li><a href="#" class="hover:text-white transition">研究報告</a></li>
-                        <li><a href="#" class="hover:text-white transition">工具下載</a></li>
+                <div class="comparison-card doh">
+                    <h3>DNS over HTTPS</h3>
+                    <p>加密傳輸，保護查詢隱私</p>
+                    <ul class="comparison-list">
+                        <li>所有查詢都透過HTTPS加密</li>
+                        <li>防止中間人攻擊和劫持</li>
+                        <li>ISP只能看到與DoH伺服器的連線</li>
+                        <li>與現代HTTPS網站相同的安全等級</li>
                     </ul>
                 </div>
-                <div>
-                    <h4 class="text-white font-medium mb-4">聯繫我們</h4>
-                    <div class="flex space-x-4 mb-4">
-                        <a href="#" class="text-blue-400 hover:text-white transition"><i class="fab fa-twitter text-xl"></i></a>
-                        <a href="https://github.com/Lawlietr/avpclub.github.io" target="_blank" class="text-blue-400 hover:text-white transition"><i class="fab fa-github text-xl"></i></a>
-                        <a href="#" class="text-blue-400 hover:text-white transition"><i class="fab fa-telegram text-xl"></i></a>
+            </div>
+
+            <div class="tech-demo scroll-reveal">
+                <h3 style="text-align: center; margin-bottom: 2rem; color: var(--primary);">DoH運作原理</h3>
+                <div class="tech-diagram">
+                    <div class="tech-step">
+                        <div class="icon">💻</div>
+                        <h4>您的裝置</h4>
+                        <p>發起DNS查詢</p>
                     </div>
-                    <p class="text-sm">訂閱我們的電子報，獲取最新隱私保護資訊</p>
-                    <div class="mt-3 flex">
-                        <input type="email" placeholder="您的電子郵件" class="px-4 py-2 rounded-l-lg bg-gray-800 text-white focus:outline-none w-full">
-                        <button class="bg-blue-600 text-white px-4 py-2 rounded-r-lg hover:bg-blue-700 transition">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
+                    <div class="arrow">→</div>
+                    <div class="tech-step">
+                        <div class="icon">🔒</div>
+                        <h4>HTTPS加密</h4>
+                        <p>查詢被加密</p>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="tech-step">
+                        <div class="icon">🌐</div>
+                        <h4>DoH伺服器</h4>
+                        <p>安全地解析網域名稱</p>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="tech-step">
+                        <div class="icon">🔓</div>
+                        <h4>加密回應</h4>
+                        <p>傳回IP位址</p>
                     </div>
                 </div>
             </div>
-            <div class="border-t border-gray-800 mt-12 pt-8 text-sm text-center">
-                <p>© 2025 DoH.AVPClub.uk隱私保護倡議。所有權利保留。</p>
+        </div>
+    </section>
+
+    <section id="setup">
+        <div class="container">
+            <h2 class="section-title scroll-reveal">如何使用DoH.avpclub.uk</h2>
+            
+        <div class="setup-guide scroll-reveal">
+                <div class="setup-item">
+                    <div class="setup-header">
+                        <span class="device-icon">📱</span>
+                        <h4>iOS 裝置 (iPhone / iPad)</h4>
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="setup-body">
+                        <div class="step-content">
+                            <p>在iOS上最簡單的方式是下載並安裝設定檔：</p>
+                            <ol style="margin-left: 1.5rem; color: var(--text-muted);">
+                                <li>點擊下方的下載按鈕，下載設定檔</li>
+                                <li>前往「設定」>「已下載的描述檔」</li>
+                                <li>找到並點擊「DoH.avpclub.uk」設定檔</li>
+                                <li>點擊「安裝」並輸入裝置密碼</li>
+                                <li>在「設定」>「一般」>「VPN與裝置管理」中確認已啟用</li>
+                            </ol>
+                            <div style="margin-top: 1rem;">
+                                <a href="https://raw.githubusercontent.com/Lawlietr/avpclub.github.io/refs/heads/main/iOS_conf/doh.avpclub.uk.mobileconfig" class="ios-download" target="_blank">
+                                    📥 下載 iOS 設定檔
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setup-item">
+                    <div class="setup-header">
+                        <span class="device-icon">🤖</span>
+                        <h4>Android 裝置 (Android 13+)</h4>
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="setup-body">
+                        <div class="step-content">
+                            <p>Android 13 及以上版本支援 DoH 設定：</p>
+                            <ol style="margin-left: 1.5rem; color: var(--text-muted);">
+                                <li>開啟「設定」>「網路與網際網路」>「VPN與網路」</li>
+                                <li>長按您的 Wi-Fi 網路並選擇「修改網路」</li>
+                                <li>勾選「顯示進階選項」</li>
+                                <li>展開「IP設定」並選擇「私有 DNS」</li>
+                                <li>選擇「私有 DNS的主機名稱」</li>
+                                <li>輸入：doh.avpclub.uk</li>
+                                <li>點擊「儲存」</li>
+                            </ol>
+                            <div class="code-block">私有 DNS 主機名稱: doh.avpclub.uk</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setup-item">
+                    <div class="setup-header">
+                        <span class="device-icon">🪟</span>
+                        <h4>Windows 11</h4>
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="setup-body">
+                        <div class="step-content">
+                            <p>Windows 11內建了DoH支援：</p>
+                            <ol style="margin-left: 1.5rem; color: var(--text-muted);">
+                                <li>開啟設定 > 網路和網際網路</li>
+                                <li>選擇您的網路連線</li>
+                                <li>點擊 "編輯DNS伺服器"</li>
+                                <li>選擇 "加密DNS (DoH)"</li>
+                                <li>輸入我們的服務位址</li>
+                            </ol>
+                            <div class="code-block">DoH範本: https://doh.avpclub.uk/dns-query</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setup-item">
+                    <div class="setup-header">
+                        <span class="device-icon">🍎</span>
+                        <h4>macOS (Big Sur 11+)</h4>
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="setup-body">
+                        <div class="step-content">
+                            <p>macOS (Big Sur 11 及以上) 支援 DoH 設定：</p>
+                            <ol style="margin-left: 1.5rem; color: var(--text-muted);">
+                                <li>開啟「系統設定」>「網路」</li>
+                                <li>選擇您的 Wi-Fi 網路</li>
+                                <li>點擊「詳細資訊」或「設定」</li>
+                                <li>點擊「DNS」標籤</li>
+                                <li>點擊「+」新增 DNS 伺服器</li>
+                                <li>輸入：https://doh.avpclub.uk/dns-query</li>
+                                <li>點擊「好」</li>
+                            </ol>
+                            <div class="code-block">DNS 伺服器: https://doh.avpclub.uk/dns-query</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setup-item">
+                    <div class="setup-header">
+                        <span class="device-icon">🟨</span>
+                        <h4>Chrome 瀏覽器</h4>
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="setup-body">
+                        <div class="step-content">
+                            <p>Chrome也支援DoH設定：</p>
+                            <ol style="margin-left: 1.5rem; color: var(--text-muted);">
+                                <li>在網址列輸入 chrome://settings/security</li>
+                                <li>找到 "使用安全DNS"</li>
+                                <li>選擇 "自訂"</li>
+                                <li>輸入我們的服務位址</li>
+                            </ol>
+                            <div class="code-block">DNS供應商: https://doh.avpclub.uk/dns-query</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setup-item">
+                    <div class="setup-header">
+                        <span class="device-icon">🦊</span>
+                        <h4>Firefox 瀏覽器</h4>
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="setup-body">
+                        <div class="step-content">
+                            <p>在Firefox中啟用DoH非常簡單：</p>
+                            <ol style="margin-left: 1.5rem; color: var(--text-muted);">
+                                <li>開啟設定 > 隱私與安全性</li>
+                                <li>向下捲動到 "DNS over HTTPS"</li>
+                                <li>選擇 "啟用"</li>
+                                <li>選擇 "自訂"</li>
+                                <li>輸入我們的服務位址</li>
+                            </ol>
+                            <div class="code-block">提供者URI: https://doh.avpclub.uk/dns-query</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setup-item">
+                    <div class="setup-header">
+                        <span class="device-icon">🟦</span>
+                        <h4>Edge 瀏覽器</h4>
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="setup-body">
+                        <div class="step-content">
+                            <p>Edge瀏覽器的設定步驟：</p>
+                            <ol style="margin-left: 1.5rem; color: var(--text-muted);">
+                                <li>開啟設定 > 隱私、搜尋和服務</li>
+                                <li>找到 "使用安全DNS"</li>
+                                <li>選擇 "選擇服務供應商"</li>
+                                <li>選擇 "自訂"</li>
+                                <li>輸入我們的服務位址</li>
+                            </ol>
+                            <div class="code-block">DNS提供程式: https://doh.avpclub.uk/dns-query</div>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
+    </section>
+
+    <section id="faq">
+        <div class="container">
+            <h2 class="section-title scroll-reveal">常見問題</h2>
+            <div class="faq">
+                <div class="faq-item scroll-reveal">
+                    <div class="faq-question">
+                        <h4>什麼是DNS over HTTPS (DoH)？</h4>
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>DNS over HTTPS是一種將DNS查詢透過HTTPS協定傳輸的技術。它將傳統的明文DNS查詢加密，防止第三方監控您的網路活動，提供與HTTPS網站相同等級的安全性。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item scroll-reveal">
+                    <div class="faq-question">
+                        <h4>DoH會影響網速嗎？</h4>
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>由於需要建立HTTPS連線，DoH可能會有輕微的延遲增加。然而，現代瀏覽器和作業系統已經優化了DoH的實作，對大多數使用者來說，差異幾乎不可察覺。在某些情況下，DoH甚至可能更快，因為它可以繞過某些ISP的DNS伺服器。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item scroll-reveal">
+                    <div class="faq-question">
+                        <h4>這個服務是免費的嗎？</h4>
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>是的！DoH.avpclub.uk完全免費且無償提供。我們致力於促進網路隱私和開放網際網路，不收集、不出售任何使用者資料。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item scroll-reveal">
+                    <div class="faq-question">
+                        <h4>DoH和DNS over TLS (DoT)有什麼差別？</h4>
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>兩者都加密DNS查詢，但使用不同的通訊協定。DoH使用HTTPS（連接埠443），看起來像一般的網站流量，更容易透過防火牆；DoT使用TLS（連接埠853），是專門為DNS設計的。DoH更適合瀏覽器使用，而DoT更適合作業系統層面的設定。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item scroll-reveal">
+                    <div class="faq-question">
+                        <h4>我可以在多個裝置上使用這個服務嗎？</h4>
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>當然！您可以在任何支援DoH的裝置上使用我們的服務，包括電腦、手機、平板等。沒有使用限制，也無需註冊帳號。</p>
+                    </div>
+                </div>
+
+                <div class="faq-item scroll-reveal">
+                    <div class="faq-question">
+                        <h4>如何驗證DoH是否正常運作？</h4>
+                        <span class="arrow-icon">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>您可以造訪 https://dnsleaktest.com 進行DNS洩漏測試。如果設定正確，您應該會看到我們的伺服器位址而不是您ISP的DNS伺服器。另外，我們的監視器服務即時顯示服務狀態。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="github">
+        <div class="container">
+            <h2 class="section-title scroll-reveal">專案資訊</h2>
+            <div class="github-links">
+                <div class="github-card scroll-reveal">
+                    <div class="github-icon">📁</div>
+                    <h3>專案Github首頁</h3>
+                    <p>查看專案源碼、了解更多技術細節，或參與貢獻</p>
+                    <a href="https://github.com/Lawlietr/avpclub.github.io" target="_blank">GitHub 首頁</a>
+                </div>
+                <div class="github-card scroll-reveal">
+                    <div class="github-icon">📊</div>
+                    <h3>服務狀態</h3>
+                    <p>即時監控DoH服務的運作狀態和可用性</p>
+                    <a href="https://github.com/Lawlietr/upptime.doh.avpclub.uk" target="_blank">監視器狀態</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 DoH.avpclub.uk - 免費DNS加密服務</p>
+            <p style="margin-top: 0.5rem;">保護您的網路隱私，促進開放網際網路</p>
         </div>
     </footer>
+
     <script>
-        // 主題切換功能
-        const themeToggle = document.getElementById('themeToggle');
-        const sunIcon = themeToggle.querySelector('.fa-sun');
-        const moonIcon = themeToggle.querySelector('.fa-moon');
-        // 檢查本地存儲或系統偏好
-        const storedTheme = localStorage.getItem('theme') ||
-                          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        // 設置初始主題
-        if (storedTheme === 'dark') {
-            document.documentElement.classList.add('dark');
-            moonIcon.classList.remove('hidden');
-        } else {
-            document.documentElement.classList.remove('dark');
-            sunIcon.classList.remove('hidden');
-        }
-        // 切換主題
-        themeToggle.addEventListener('click', () => {
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('theme', 'light');
-                sunIcon.classList.remove('hidden');
-                moonIcon.classList.add('hidden');
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('theme', 'dark');
-                moonIcon.classList.remove('hidden');
-                sunIcon.classList.add('hidden');
-            }
-        });
-        // 監聽系統主題變化
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-            if (!localStorage.getItem('theme')) {
-                if (e.matches) {
-                    document.documentElement.classList.add('dark');
-                    moonIcon.classList.remove('hidden');
-                    sunIcon.classList.add('hidden');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                    sunIcon.classList.remove('hidden');
-                    moonIcon.classList.add('hidden');
-                }
-            }
-        });
-        // 常見問題切換
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', () => {
-                const answer = question.nextElementSibling;
-                const icon = question.querySelector('i');
-                answer.classList.toggle('hidden');
-                icon.classList.toggle('rotate-180');
-            });
-        });
-        // 平滑滾動
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    
+                    faqItems.forEach(otherItem => {
+                        otherItem.classList.remove('active');
                     });
-                }
+                    
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+
+            const setupItems = document.querySelectorAll('.setup-item');
+            
+            setupItems.forEach(item => {
+                const header = item.querySelector('.setup-header');
+                header.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    
+                    if (isActive) {
+                        item.classList.remove('active');
+                    } else {
+                        item.classList.add('active');
+                    }
+                });
+            });
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                    }
+                });
+            }, observerOptions);
+
+            const scrollRevealElements = document.querySelectorAll('.scroll-reveal');
+            scrollRevealElements.forEach(el => {
+                observer.observe(el);
+            });
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        const offsetTop = target.offsetTop - 80;
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
             });
         });
     </script>

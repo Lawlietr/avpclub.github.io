@@ -3,87 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DoH.avpclub.uk - 免費DNS加密服務</title>
+    <title>DoH.avpclub.uk - DNS Over HTTPS 加密服務</title>
+    <meta name="description" content="免費、無日誌、安全的 DNS Over HTTPS (DoH) 服務，保護您的網路隱私">
+    <meta name="keywords" content="DNS, DoH, DNS Over HTTPS, 加密 DNS, 隱私保護, 免費 DNS 服務">
     <style>
+        /* ===== 全局樣式 (夜間模式) ===== */
+        :root {
+            --primary-color: #60a5fa;
+            --primary-light: #3b82f6;
+            --primary-dark: #1e3a8a;
+            --accent-color: #22d3ee;
+            --accent-light: #67e8f9;
+            --bg-color: #0f1115;
+            --bg-card: #1f2937;
+            --text-main: #e5e7eb;
+            --text-secondary: #9ca3af;
+            --text-light: #6b7280;
+            --border-color: #374151;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        :root {
-            --primary: #00d4ff;
-            --primary-dark: #0099cc;
-            --secondary: #6c5ce7;
-            --bg-dark: #0a0e17;
-            --bg-card: #151b2b;
-            --bg-lighter: #1e2538;
-            --text: #e2e8f0;
-            --text-muted: #94a3b8;
-            --gradient: linear-gradient(135deg, #00d4ff 0%, #6c5ce7 100%);
-            --gradient-text: linear-gradient(135deg, #00d4ff 0%, #6c5ce7 100%);
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: var(--bg-dark);
-            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+            background: var(--bg-color);
+            color: var(--text-main);
             line-height: 1.6;
             overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(34, 211, 238, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(96, 165, 250, 0.05) 0%, transparent 20%);
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
         }
 
-        nav {
+        ul {
+            list-style: none;
+        }
+
+        /* ===== 導航欄 ===== */
+        .navbar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(10, 14, 23, 0.95);
+            z-index: 100;
+            background: rgba(15, 17, 21, 0.95);
             backdrop-filter: blur(10px);
-            z-index: 1000;
+            box-shadow: var(--shadow-sm);
             padding: 1rem 0;
-            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+            border-bottom: 1px solid var(--border-color);
         }
 
-        nav .container {
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .logo {
+        .nav-logo {
             font-size: 1.5rem;
-            font-weight: bold;
-            background: var(--gradient-text);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-logo svg {
+            color: var(--accent-color);
+            width: 28px;
+            height: 28px;
         }
 
         .nav-links {
             display: flex;
-            gap: 2rem;
-            list-style: none;
+            gap: 1.5rem;
         }
 
         .nav-links a {
-            color: var(--text);
-            text-decoration: none;
-            transition: color 0.3s;
+            color: #e5e7eb;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s ease;
         }
 
         .nav-links a:hover {
-            color: var(--primary);
+            color: var(--accent-color);
         }
 
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .github-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #3b82f6;
+            color: white;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .github-btn:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #e5e7eb;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle:hover {
+            color: var(--accent-color);
+        }
+
+        /* ===== Hero 區域 ===== */
         .hero {
-            padding: 150px 0 100px;
-            text-align: center;
+            padding: 10rem 0 6rem;
+            background: linear-gradient(135deg, #0c1929 0%, #1e3a8a 100%);
+            color: white;
             position: relative;
             overflow: hidden;
         }
@@ -91,79 +170,498 @@
         .hero::before {
             content: '';
             position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(255, 255, 255, 0.05) 0%, transparent 25%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero-text h1 span {
+            color: var(--accent-light);
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            margin-bottom: 2rem;
+            line-height: 1.7;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            color: white;
+            box-shadow: 0 4px 14px rgba(34, 211, 238, 0.4);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 211, 238, 0.5);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .dns-tree {
+            width: 300px;
+            height: 300px;
+            position: relative;
+        }
+
+        .tree-node {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            box-shadow: var(--shadow-lg);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .tree-node.user {
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-color);
+            color: white;
+            animation-delay: 0s;
+        }
+
+        .tree-node.doh {
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-light);
+            color: white;
+            animation-delay: 0.5s;
+        }
+
+        .tree-node.server {
+            top: 90%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-color);
+            color: white;
+            animation-delay: 1s;
+        }
+
+        .tree-link {
+            position: absolute;
+            height: 2px;
+            background: white;
+            transform-origin: top;
             z-index: -1;
         }
 
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            background: var(--gradient-text);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: fadeInUp 1s ease;
+        .tree-link-1 {
+            width: 100px;
+            top: 50%;
+            left: 50%;
+            transform: rotate(45deg);
+            transform-origin: top left;
         }
 
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            max-width: 700px;
-            margin: 0 auto 2rem;
-            animation: fadeInUp 1s ease 0.2s both;
+        .tree-link-2 {
+            width: 100px;
+            top: 50%;
+            left: 50%;
+            transform: rotate(-45deg);
+            transform-origin: top right;
         }
 
-        .hero .cta-button {
-            display: inline-block;
-            padding: 1rem 2.5rem;
-            background: var(--gradient);
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: transform 0.3s, box-shadow 0.3s;
-            animation: fadeInUp 1s ease 0.4s both;
+        .tree-link-3 {
+            width: 120px;
+            top: 70%;
+            left: 50%;
+            transform: rotate(45deg);
+            transform-origin: top left;
         }
 
-        .hero .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+        .tree-link-4 {
+            width: 120px;
+            top: 70%;
+            left: 50%;
+            transform: rotate(-45deg);
+            transform-origin: top right;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
-        section {
-            padding: 80px 0;
+        /* ===== 安全優勢 ===== */
+        .security-benefits {
+            padding: 6rem 0;
         }
 
         .section-title {
             text-align: center;
             font-size: 2.5rem;
+            font-weight: 700;
             margin-bottom: 3rem;
-            background: var(--gradient-text);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--primary-color);
+        }
+
+        .section-title span {
+            color: var(--accent-color);
+        }
+
+        .benefits-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .benefit-card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--accent-color);
+        }
+
+        .benefit-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-light);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .benefit-icon svg {
+            width: 32px;
+            height: 32px;
+            color: white;
+        }
+
+        .benefit-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .benefit-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ===== 技術原理 ===== */
+        .tech-principles {
+            padding: 6rem 0;
+            background: var(--bg-card);
+        }
+
+        .principles-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .tech-content h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .tech-content p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .feature-list {
+            margin-top: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .feature-check {
+            width: 24px;
+            height: 24px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .feature-check svg {
+            width: 16px;
+            height: 16px;
+            color: white;
+        }
+
+        .feature-item h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--primary-color);
+        }
+
+        .feature-item p {
+            margin-bottom: 0;
+            color: var(--text-secondary);
+        }
+
+        .tech-visual {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            padding: 2rem;
+            border-radius: 20px;
+            position: relative;
+        }
+
+        .tech-visual::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--primary-light) 100%);
+            border-radius: 25px;
+            z-index: -1;
+            opacity: 0.2;
+        }
+
+        .encryption-diagram {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .enc-row {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .enc-box {
+            min-width: 100px;
+            padding: 1rem;
+            background: white;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: var(--shadow-md);
+        }
+
+        .enc-box.locked {
+            background: var(--accent-color);
+            color: white;
+            position: relative;
+        }
+
+        .enc-box.locked::after {
+            content: '🔒';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+        }
+
+        .enc-box.plain {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .enc-arrow {
+            font-size: 2rem;
+            color: var(--primary-light);
+        }
+
+        .lock-icon {
+            font-size: 2rem;
+            color: var(--accent-color);
+            display: flex;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        /* ===== 技術流程圖 ===== */
+        .tech-flow-diagram {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flow-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+        }
+
+        .flow-node.client {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .flow-node.doh {
+            background: var(--primary-light);
+            color: white;
+        }
+
+        .flow-node.server {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .flow-node svg {
+            width: 40px;
+            height: 40px;
+            stroke: white;
+        }
+
+        .flow-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        .flow-arrow {
+            font-size: 2rem;
+            color: var(--primary-light);
+            animation: bounce 1.5s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .flow-status {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            background: rgba(34, 211, 238, 0.1);
+            border-radius: 50px;
+            border: 2px solid var(--accent-color);
+        }
+
+        .flow-status svg {
+            color: var(--accent-color);
+        }
+
+        .status-text {
+            font-weight: 600;
+            color: var(--accent-color);
+            font-size: 0.9rem;
+        }
+
+        /* ===== 服務特色 ===== */
+        .service-features {
+            padding: 6rem 0;
+            background: var(--bg-color);
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
         }
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
             margin-top: 3rem;
         }
@@ -171,265 +669,247 @@
         .feature-card {
             background: var(--bg-card);
             padding: 2rem;
-            border-radius: 16px;
-            border: 1px solid rgba(0, 212, 255, 0.1);
-            transition: transform 0.3s, border-color 0.3s;
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            transition: all 0.3s ease;
         }
 
         .feature-card:hover {
             transform: translateY(-5px);
-            border-color: var(--primary);
+            box-shadow: var(--shadow-xl);
         }
 
         .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feature-icon svg {
+            width: 48px;
+            height: 48px;
+            color: var(--accent-color);
         }
 
         .feature-card h3 {
             font-size: 1.5rem;
+            font-weight: 600;
             margin-bottom: 1rem;
-            color: var(--primary);
+            color: var(--primary-color);
         }
 
         .feature-card p {
-            color: var(--text-muted);
+            color: var(--text-secondary);
+            line-height: 1.6;
         }
 
-        .comparison {
+        .feature-card strong {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        /* ===== 服務詳細資訊 ===== */
+        .service-details {
+            padding: 6rem 0;
+            background: var(--bg-color);
+        }
+
+        .details-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .details-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-top: 3rem;
+            gap: 4rem;
+            align-items: center;
         }
 
-        .comparison-card {
+        .details-text h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .details-text p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .server-info {
             background: var(--bg-card);
             padding: 2rem;
-            border-radius: 16px;
-            text-align: center;
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
         }
 
-        .comparison-card.traditional {
-            border: 2px solid #ef4444;
-        }
-
-        .comparison-card.doh {
-            border: 2px solid var(--primary);
-        }
-
-        .comparison-card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-        }
-
-        .comparison-card.traditional h3 {
-            color: #ef4444;
-        }
-
-        .comparison-card.doh h3 {
-            color: var(--primary);
-        }
-
-        .comparison-list {
-            list-style: none;
-            text-align: left;
-            margin-top: 1.5rem;
-        }
-
-        .comparison-list li {
-            padding: 0.5rem 0;
+        .server-info-item {
             display: flex;
+            justify-content: space-between;
             align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .server-info-item:last-child {
+            border-bottom: none;
+        }
+
+        .server-info-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .server-info-value {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .server-info-value span {
+            color: var(--accent-color);
+        }
+
+        /* ===== 使用教學 ===== */
+        .tutorial {
+            padding: 6rem 0;
+            background: var(--bg-card);
+        }
+
+        .tutorial-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .tabs {
+            display: flex;
             gap: 0.5rem;
-        }
-
-        .comparison-card.traditional .comparison-list li::before {
-            content: '✗';
-            color: #ef4444;
-        }
-
-        .comparison-card.doh .comparison-list li::before {
-            content: '✓';
-            color: var(--primary);
-        }
-
-        .tech-demo {
-            background: var(--bg-card);
-            padding: 2rem;
-            border-radius: 16px;
-            margin-top: 2rem;
-        }
-
-        .tech-diagram {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
+            margin-bottom: 2rem;
             flex-wrap: wrap;
-            gap: 2rem;
-            padding: 2rem 0;
         }
 
-        .tech-step {
-            text-align: center;
-            flex: 1;
-            min-width: 150px;
-        }
-
-        .tech-step .icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .tech-step h4 {
-            margin-bottom: 0.5rem;
-            color: var(--primary);
-        }
-
-        .tech-step p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .arrow {
-            font-size: 2rem;
-            color: var(--primary);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 0.5;
-            }
-            50% {
-                opacity: 1;
-            }
-        }
-
-        .setup-guide {
-            background: var(--bg-card);
-            padding: 2rem;
-            border-radius: 16px;
-            margin-top: 2rem;
-        }
-
-        .setup-item {
-            background: var(--bg-card);
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            overflow: hidden;
-            border: 1px solid rgba(0, 212, 255, 0.1);
-            transition: border-color 0.3s;
-        }
-
-        .setup-item:hover {
-            border-color: var(--primary);
-        }
-
-        .setup-header {
-            padding: 1.5rem;
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-color);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            transition: background 0.3s;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: var(--text-main);
         }
 
-        .setup-header:hover {
-            background: var(--bg-lighter);
+        .tab:hover {
+            border-color: var(--primary-light);
+            background: rgba(59, 130, 246, 0.1);
         }
 
-        .device-icon {
-            font-size: 2rem;
-            flex-shrink: 0;
+        .tab.active {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
         }
 
-        .setup-header h4 {
-            margin: 0;
-            color: var(--text);
-            font-size: 1.3rem;
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
         }
 
-        .arrow-icon {
-            margin-left: auto;
-            transition: transform 0.3s;
-            color: var(--primary);
-            font-size: 1.2rem;
+        .tab-content.active {
+            display: block;
         }
 
-        .setup-item.active .arrow-icon {
-            transform: rotate(180deg);
-        }
-
-        .setup-body {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-
-        .setup-item.active .setup-body {
-            max-height: 500px;
-        }
-
-        .setup-body .step-content {
-            padding: 0 1.5rem 1.5rem;
-        }
-
-        .step-content h4 {
-            margin-bottom: 0.5rem;
-            color: var(--primary);
-        }
-
-        .step-content p {
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .code-block {
-            background: var(--bg-dark);
-            padding: 1rem;
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 10px;
+            font-family: 'Consolas', 'Monaco', monospace;
             font-size: 0.9rem;
             overflow-x: auto;
-            border: 1px solid rgba(0, 212, 255, 0.2);
+            position: relative;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .code-block code {
-            color: var(--primary);
+            display: block;
+            line-height: 1.6;
+            color: #e2e8f0;
         }
 
-        .ios-download {
-            background: var(--gradient);
-            color: white;
-            text-decoration: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: transform 0.3s, box-shadow 0.3s;
+        .code-block code a {
+            color: var(--accent-color);
         }
 
-        .ios-download:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+        .config-info {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: #1e3a8a;
+            border-radius: 10px;
+            color: #93c5fd;
+            line-height: 1.6;
         }
 
+        /* ===== 常見問題 ===== */
         .faq {
-            margin-top: 3rem;
+            padding: 6rem 0;
+            background: var(--bg-card);
+        }
+
+        .faq-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
         }
 
         .faq-item {
-            background: var(--bg-card);
-            border-radius: 12px;
+            background: var(--bg-color);
+            border-radius: 15px;
             margin-bottom: 1rem;
             overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
         }
 
-        .faq-question {
-            padding: 1.5rem;
+        .faq-header {
+            padding: 1.25rem 1.5rem;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
@@ -437,655 +917,943 @@
             transition: background 0.3s;
         }
 
-        .faq-question:hover {
-            background: var(--bg-lighter);
+        .faq-header:hover {
+            background: rgba(59, 130, 246, 0.1);
         }
 
-        .faq-question h4 {
-            margin: 0;
-            color: var(--text);
+        .faq-header h3 {
+            font-weight: 600;
+            color: var(--primary-color);
         }
 
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-            padding: 0 1.5rem;
+        .faq-toggle {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
         }
 
-        .faq-answer p {
-            padding: 1rem 0;
-            color: var(--text-muted);
+        .faq-toggle svg {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.3s;
         }
 
-        .faq-item.active .faq-answer {
-            max-height: 500px;
-        }
-
-        .faq-item.active .arrow-icon {
+        .faq-item.active .faq-toggle svg {
             transform: rotate(180deg);
         }
 
-        .arrow-icon {
-            transition: transform 0.3s;
-            color: var(--primary);
+        .faq-content {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
         }
 
-        .github-links {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+        .faq-item.active .faq-content {
+            padding: 0 1.5rem 1.25rem;
+            max-height: 500px;
+            transition: max-height 0.5s ease;
         }
 
-        .github-card {
-            background: var(--bg-card);
-            padding: 2rem;
-            border-radius: 16px;
+        /* ===== CTA 區域 ===== */
+        .cta-section {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f1115 100%);
             text-align: center;
-            border: 1px solid rgba(0, 212, 255, 0.1);
-            transition: transform 0.3s, border-color 0.3s;
         }
 
-        .github-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary);
+        .cta-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
         }
 
-        .github-card .github-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .github-card h3 {
-            margin-bottom: 1rem;
-            color: var(--text);
-        }
-
-        .github-card p {
-            color: var(--text-muted);
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
             margin-bottom: 1.5rem;
+            color: var(--primary-color);
         }
 
-        .github-card a {
+        .cta-text {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .cta-btn {
             display: inline-block;
-            padding: 0.8rem 2rem;
-            background: var(--gradient);
+            padding: 1rem 2.5rem;
+            background: var(--accent-color);
             color: white;
-            text-decoration: none;
-            border-radius: 8px;
+            border-radius: 50px;
             font-weight: 600;
-            transition: transform 0.3s, box-shadow 0.3s;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px rgba(34, 211, 238, 0.4);
         }
 
-        .github-card a:hover {
+        .cta-btn:hover {
+            background: var(--accent-light);
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.3);
+            box-shadow: 0 6px 20px rgba(34, 211, 238, 0.5);
         }
 
+        /* ===== 頁腳 ===== */
         footer {
-            background: var(--bg-card);
-            padding: 3rem 0;
-            margin-top: 5rem;
+            background: #0b0d10;
+            padding: 3rem 0 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-col h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .footer-col p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-col ul li a {
+            color: var(--text-secondary);
+            transition: color 0.3s;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
             text-align: center;
-            border-top: 1px solid rgba(0, 212, 255, 0.1);
         }
 
-        footer p {
-            color: var(--text-muted);
-        }
-
-        .service-url {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--primary);
-            word-break: break-all;
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: var(--bg-card);
-            border-radius: 12px;
-            border: 2px solid var(--primary);
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: rgba(0, 255, 128, 0.1);
-            color: #00ff80;
-            border-radius: 20px;
-            font-size: 0.9rem;
+        .footer-bottom p {
+            color: var(--text-light);
             margin-bottom: 1rem;
         }
 
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background: #00ff80;
+        /* ===== 返回頂部按鈕 ===== */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            color: white;
             border-radius: 50%;
-            animation: blink 1.5s infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+            z-index: 99;
         }
 
-        @keyframes blink {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.3;
-            }
+        .scroll-to-top:hover {
+            background: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(34, 211, 238, 0.4);
         }
 
-        @media (max-width: 768px) {
-            .hero h1 {
+        .scroll-to-top svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* ===== 響應式設計 ===== */
+        @media (max-width: 968px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h1 {
                 font-size: 2.5rem;
             }
 
-            .comparison {
+            .principles-container {
                 grid-template-columns: 1fr;
+            }
+
+            .details-content {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-toggle {
+                display: block;
             }
 
             .nav-links {
                 display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: var(--bg-card);
+                padding: 1rem 0;
+                border-bottom: 1px solid var(--border-color);
             }
 
-            .service-url {
-                font-size: 1.2rem;
+            .nav-links.active {
+                display: flex;
             }
 
-            .arrow {
-                transform: rotate(90deg);
+            .nav-links a {
+                padding: 1rem 2rem;
             }
         }
 
-        .scroll-reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
+        @media (max-width: 640px) {
+            .hero {
+                padding: 6rem 0 4rem;
+            }
 
-        .scroll-reveal.revealed {
-            opacity: 1;
-            transform: translateY(0);
+            .btn {
+                padding: 0.75rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <nav>
-        <div class="container">
-            <div class="logo">🔐 DoH.avpclub.uk</div>
-            <ul class="nav-links">
-                <li><a href="#privacy">隱私</a></li>
-                <li><a href="#technology">技術</a></li>
-                <li><a href="#setup">設定</a></li>
-                <li><a href="#faq">常見問題</a></li>
-                <li><a href="#github">GitHub</a></li>
-            </ul>
+    <!-- 導航欄 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 6v6l4 2"></path>
+                </svg>
+                DoH<span>.avpclub.uk</span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="#hero">首頁</a>
+                <a href="#benefits">安全優勢</a>
+                <a href="#principles">技術原理</a>
+                <a href="#features">服務特色</a>
+                <a href="#tutorial">使用教學</a>
+                <a href="#faq">常見問題</a>
+            </div>
+            <a class="github-btn" href="https://github.com/Lawlietr/avpclub.github.io" target="_blank">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+                GitHub
+            </a>
+            <div class="menu-toggle" id="menuToggle">
+                ☰
+            </div>
         </div>
     </nav>
 
-    <section class="hero">
-        <div class="container">
-            <div style="text-align: center; margin-bottom: 3rem;">
-                <h1 style="font-size: 4rem; font-weight: 800; margin-bottom: 1rem; background: var(--gradient-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">DoH.avpclub.uk</h1>
-                <p style="font-size: 2rem; font-weight: 600; color: var(--primary); margin-bottom: 2rem;">隱匿您的 DNS 網足跡</p>
-            </div>
-            
-            <div style="background: var(--bg-card); padding: 3rem; border-radius: 24px; border: 2px solid var(--gradient); max-width: 900px; margin: 0 auto 3rem; box-shadow: 0 10px 40px rgba(0, 212, 255, 0.15);">
-                <p style="font-size: 1.4rem; line-height: 1.8; color: var(--text); margin-bottom: 2rem; text-align: center;">
-                    免費提供 <strong style="color: var(--primary);">DNS over HTTPS (DoH)</strong> 解析服務。將原本明文的 DNS 請求加密並透過 HTTPS 協議發送，讓您的上網習慣不再暴露給 ISP 或第三方窺探。
-                </p>
-                <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; margin-top: 2rem;">
-                    <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.8rem 1.5rem; background: rgba(0, 212, 255, 0.1); border-radius: 50px; border: 1px solid rgba(0, 212, 255, 0.2);">
-                        <span style="font-size: 1.2rem;">🔓</span>
-                        <span style="font-weight: 600; color: var(--primary);">完全自由</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.8rem 1.5rem; background: rgba(108, 92, 231, 0.1); border-radius: 50px; border: 1px solid rgba(108, 92, 231, 0.2);">
-                        <span style="font-size: 1.2rem;">👤</span>
-                        <span style="font-weight: 600; color: var(--secondary);">無需註冊</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.8rem 1.5rem; background: rgba(0, 255, 128, 0.1); border-radius: 50px; border: 1px solid rgba(0, 255, 128, 0.2);">
-                        <span style="font-size: 1.2rem;">🛡️</span>
-                        <span style="font-weight: 600; color: #00ff80;">不收集資料</span>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.8rem 1.5rem; background: rgba(255, 255, 255, 0.1); border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.2);">
-                        <span style="font-size: 1.2rem;">⚡</span>
-                        <span style="font-weight: 600; color: var(--text);">隨時啟用</span>
-                    </div>
+    <!-- Hero 區域 -->
+    <section id="hero" class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>保護您的 <span>DNS 隱私</span><br>使用加密 DNS</h1>
+                <p>DoH.avpclub.uk 是一個免費、無日誌、安全的 DNS Over HTTPS 服務，保護您的網路流量免受竊聽、劫持和監控。</p>
+                <div class="hero-btns">
+                    <a href="#tutorial" class="btn btn-primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        開始使用
+                    </a>
+                    <a href="#principles" class="btn btn-outline">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        了解原理
+                    </a>
                 </div>
             </div>
-            
-            <a href="#setup" class="cta-button">開始使用</a>
+            <div class="hero-visual">
+                <div class="dns-tree">
+                    <div class="tree-node user">您</div>
+                    <div class="tree-node doh">DoH</div>
+                    <div class="tree-node server">Server</div>
+                    <div class="tree-link tree-link-1"></div>
+                    <div class="tree-link tree-link-2"></div>
+                    <div class="tree-link tree-link-3"></div>
+                    <div class="tree-link tree-link-4"></div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section id="privacy">
-        <div class="container">
-            <h2 class="section-title scroll-reveal">為什麼DNS隱私至關重要？</h2>
-            
-            <p class="scroll-reveal" style="text-align: center; color: var(--text-muted); max-width: 800px; margin: 0 auto 3rem;">
-                DNS（網域名稱系統）是互聯網的核心基礎設施，負責將網域名稱轉換為IP位址。然而，傳統的DNS查詢是以明文形式傳輸的，這意味著您的每一個瀏覽動作都可能被第三方監控和記錄。了解DNS隱私的重要性，是保護個人數位生活的第一步。
+    <!-- 安全優勢 -->
+    <section id="benefits" class="security-benefits">
+        <h2 class="section-title">為何 <span>DNS 隱私很重要</span></h2>
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </div>
+                <h3>防止 DNS 嗅探</h3>
+                <p>明文 DNS 查詢容易被竊聽，攻擊者可以監控您的上網活動。DoH 加密所有 DNS 查詢，保護您的隱私。</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
+                        <line x1="12" y1="2" x2="12" y2="12"></line>
+                    </svg>
+                </div>
+                <h3>杜絕 ISP 監控</h3>
+                <p>您的 ISP 可以看到並記錄您的 DNS 查詢。DoH 將查詢加密傳輸，防止 ISP 追蹤您的上網行為。</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </div>
+                <h3>防止 DNS 劫持</h3>
+                <p>攻擊者可以劫持 DNS 查詢並重定向到惡意網站。DoH 的加密機制有效防止 DNS 劫持攻擊。</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                        <rect x="9" y="9" width="6" height="6"></rect>
+                        <line x1="9" y1="1" x2="9" y2="4"></line>
+                        <line x1="15" y1="1" x2="15" y2="4"></line>
+                        <line x1="9" y1="20" x2="9" y2="23"></line>
+                        <line x1="15" y1="20" x2="15" y2="23"></line>
+                        <line x1="20" y1="9" x2="23" y2="9"></line>
+                        <line x1="20" y1="14" x2="23" y2="14"></line>
+                        <line x1="1" y1="9" x2="4" y2="9"></line>
+                        <line x1="1" y1="14" x2="4" y2="14"></line>
+                    </svg>
+                </div>
+                <h3>保護個人資料</h3>
+                <p>您的 DNS 查詢包含了大量個人資訊，包括您訪問的網站。加密 DNS 可以保護這些敏感資料。</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+                    </svg>
+                </div>
+                <h3>全面加密傳輸</h3>
+                <p>所有 DNS 查詢都通過 HTTPS 協議加密傳輸，確保資料在傳輸過程中不會被竊取或篡改。</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                </div>
+                <h3>匿名上網體驗</h3>
+                <p>使用 DoH 服務，您的上網活動不會被追蹤，享受真正的匿名上網體驗。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 技術原理 -->
+    <section id="principles" class="tech-principles">
+        <div class="principles-container">
+            <div class="tech-content">
+                <h2>DNS Over HTTPS 技術原理</h2>
+                <p>DNS Over HTTPS (DoH) 是一種新型的 DNS 協議，將傳統的 DNS 查詢透過 HTTPS 加密傳輸。</p>
+                <p>與傳統明文的 DNS 查詢不同，DoH 將所有 DNS 請求和回應都包裝在 HTTPS 協議中，確保資料在傳輸過程中的安全性與完整性。</p>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-check">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4>加密傳輸</h4>
+                            <p>所有 DNS 查詢都透過 HTTPS 加密，防止竊聽</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-check">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4>防篡改</h4>
+                            <p>加密機制確保資料在傳輸中不會被篡改</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-check">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4>標準化</h4>
+                            <p>符合 IETF RFC 8484 標準</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tech-visual">
+                <div class="tech-flow-diagram">
+                    <div class="flow-step">
+                        <div class="flow-node client">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                <line x1="8" y1="21" x2="16" y2="21"></line>
+                                <line x1="12" y1="17" x2="12" y2="21"></line>
+                            </svg>
+                            <span class="flow-label">用戶裝置</span>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-step">
+                        <div class="flow-node doh">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                            <span class="flow-label">DoH 加密</span>
+                        </div>
+                    </div>
+                    <div class="flow-arrow">↓</div>
+                    <div class="flow-step">
+                        <div class="flow-node server">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                                <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                                <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                            </svg>
+                            <span class="flow-label">DNS 服務器</span>
+                        </div>
+                    </div>
+                    <div class="flow-status locked">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                        <span class="status-text">加密傳輸</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 服務特色 -->
+    <section id="features" class="service-features">
+        <div class="features-container">
+            <h2 class="section-title">DoH 服務 <span>特色優勢</span></h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    <h3>零日誌政策</h3>
+                    <p>我們完全不記錄任何使用者的 DNS 查詢日誌，保護您的隱私。</p>
+                    <p style="margin-top: 0.5rem;"><strong>100% 隱私保護</strong></p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <h3>高速解析</h3>
+                    <p>優化的解析器配置，提供快速穩定的 DNS 解析服務。</p>
+                    <p style="margin-top: 0.5rem;"><strong>低延遲響應</strong></p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                    </div>
+                    <h3>完全免費</h3>
+                    <p>我們提供完全免費的 DoH 服務，無需付費即可使用。</p>
+                    <p style="margin-top: 0.5rem;"><strong>無任何費用</strong></p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                        </svg>
+                    </div>
+                    <h3>高可用性</h3>
+                    <p>部署在多個節點上，確保服務的穩定性和可用性。</p>
+                    <p style="margin-top: 0.5rem;"><strong>99.9% 可用</strong></p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <h3>透明度</h3>
+                    <p>我們公開服務政策和程式碼，接受社群監督。</p>
+                    <p style="margin-top: 0.5rem;"><strong>開源項目</strong></p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                    </div>
+                    <h3>簡易配置</h3>
+                    <p>提供詳細的配置指南，輕鬆完成設置。</p>
+                    <p style="margin-top: 0.5rem;"><strong>一鍵設定</strong></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 服務詳細資訊 -->
+    <section class="service-details">
+        <div class="details-container">
+            <div class="details-content">
+                <div class="details-text">
+                    <h2>DoH 服務資訊</h2>
+                    <p>我們提供安全可靠的 DNS Over HTTPS 服務，所有資料傳輸都經過加密保護。</p>
+                    <div class="server-info">
+                        <div class="server-info-item">
+                            <span class="server-info-label">DNS 服務網址</span>
+                            <span class="server-info-value">https://doh.avpclub.uk/dns-query</span>
+                        </div>
+                        <div class="server-info-item">
+                            <span class="server-info-label">加密方式</span>
+                            <span class="server-info-value"><span>HTTPS (DoH)</span></span>
+                        </div>
+                        <div class="server-info-item">
+                            <span class="server-info-label">日誌政策</span>
+                            <span class="server-info-value"><span>零日誌</span></span>
+                        </div>
+                        <div class="server-info-item">
+                            <span class="server-info-label">服務狀態</span>
+                            <span class="server-info-value"><a href="https://lawlietr.github.io/upptime.doh.avpclub.uk/" target="_blank">查看狀態</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 使用教學 -->
+    <section id="tutorial" class="tutorial">
+        <div class="tutorial-container">
+            <h2 class="section-title">使用 <span>教學指南</span></h2>
+            <p style="text-align: center; max-width: 600px; margin: 0 auto 2rem;">
+                以下是不同平台的 DoH 配置方法，選擇您使用的平台進行設置
             </p>
             
-            <div class="features-grid">
-                <div class="feature-card scroll-reveal">
-                    <div class="feature-icon">👁️</div>
-                    <h3>ISP監控您的網路活動</h3>
-                    <p>您的網際網路服務供應商（ISP）可以直接查看您造訪的所有網站，即使該網站使用HTTPS加密。由於瀏覽器不會加密DNS查詢，ISP能夠精確記錄您的瀏覽習慣、觀看的內容、瀏覽的時長，甚至是您在瀏覽器中輸入的每個關鍵字。這些資料可能被用於商業分析、行銷推廣，甚至被出售給第三方。</p>
+            <div class="tabs">
+                <div class="tab active" data-tab="windows">Windows</div>
+                <div class="tab" data-tab="macos">macOS</div>
+                <div class="tab" data-tab="android">Android</div>
+                <div class="tab" data-tab="ios">iOS</div>
+                <div class="tab" data-tab="browser">瀏覽器</div>
+            </div>
+
+            <div class="tab-content active" id="windows">
+                <p>Windows 11 內建 DoH 支援：</p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>設定步驟：</span>
+                        <button class="copy-btn" onclick="copyCode(this)">複製</button>
+                    </div>
+                    <code>
+1. 開啟設定 > 網路和網際網路<br>
+2. 選擇您的網路連線<br>
+3. 點擊 "編輯DNS伺服器"<br>
+4. 選擇 "加密DNS (DoH)"<br>
+5. 輸入我們的服務位址：<br>
+   https://doh.avpclub.uk/dns-query
+                    </code>
                 </div>
-                <div class="feature-card scroll-reveal">
-                    <div class="feature-icon">🎯</div>
-                    <h3>惡意廣告與精準追蹤</h3>
-                    <p>第三方廣告平台利用DNS查詢資料建立您的使用者檔案，追蹤您的瀏覽行為、地理位置、年齡層、興趣愛好等。當您造訪任何網站時，廣告商可以在您的IP位址和DNS查詢歷史中找到您的特徵，從而投放高度針對性的廣告。這種做法不僅侵犯隱私，還可能導致您看到敏感或不適當的廣告內容。</p>
+            </div>
+
+            <div class="tab-content" id="macos">
+                <p>macOS (Big Sur 11+)：</p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>設定步驟：</span>
+                        <button class="copy-btn" onclick="copyCode(this)">複製</button>
+                    </div>
+                    <code>
+1. 開啟「系統設定」>「網路」<br>
+2. 選擇您的 Wi-Fi 網路<br>
+3. 點擊「詳細資訊」或「設定」<br>
+4. 點擊「DNS」標籤<br>
+5. 點擊「+」新增 DNS 伺服器<br>
+6. 輸入：https://doh.avpclub.uk/dns-query<br>
+7. 點擊「好」
+                    </code>
                 </div>
-                <div class="feature-card scroll-reveal">
-                    <div class="feature-icon">🛡️</div>
-                    <h3>DNS劫持攻擊風險</h3>
-                    <p>攻擊者可以透過DNS劫持，將您請求的網站重新導向到惡意或仿冒的網站。這些網站可能模仿您常用的銀行、郵件、社交媒體等網站，誘騙您輸入帳號密碼。由於傳統DNS查詢是明文的，中間人攻擊非常容易實現，受害者往往在不知情的情況下洩露敏感資訊。</p>
+                <div class="config-info">
+                    DNS 伺服器: https://doh.avpclub.uk/dns-query
                 </div>
-                <div class="feature-card scroll-reveal">
-                    <div class="feature-icon">📊</div>
-                    <h3>供應商出售您的數據</h3>
-                    <p>許多免費DNS服務會收集、分析並出售您的DNS查詢資料。這些資料包含了您瀏覽的網站、查詢的關鍵字、連接時間等敏感資訊。數據被用於行銷、信用評估甚至法律調查。使用加密的DNS服務可以防止這種數據洩漏，讓您的瀏覽行為保持私密。</p>
+            </div>
+
+
+            <div class="tab-content" id="android">
+                <p>Android 內建 Private DNS 功能：</p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>設定步驟：</span>
+                        <button class="copy-btn" onclick="copyCode(this)">複製</button>
+                    </div>
+                    <code>
+1. 進入 設定 → 網路和網際網路<br>
+2. 選擇 Wi-Fi 或移動網路<br>
+3. 長按網路名稱 → 高級選項<br>
+4. Private DNS 模式選擇 "Private DNS host name"<br>
+5. 輸入主機名：doh.avpclub.uk
+                    </code>
                 </div>
-                <div class="feature-card scroll-reveal">
-                    <div class="feature-icon">🗺️</div>
-                    <h3>地理位置追蹤</h3>
-                    <p>通過DNS查詢的時間戳記和頻率，攻擊者可以推測您的地理位置、活動模式和生活習慣。例如，如果您經常在特定時間查詢特定的網站，這可能暗示您的工作時間表或居住地區。結合其他網路流量分析，您可能被追蹤到比想像中更詳細的程度。</p>
+            </div>
+
+            <div class="tab-content" id="ios">
+                <p>iOS 使用配置文件直接套用：</p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>配置步驟：</span>
+                        <button class="copy-btn" onclick="copyCode(this)">複製</button>
+                    </div>
+                    <code>
+1. 點擊下方連結下載配置文件<br>
+2. 在瀏覽器中開啟該連結<br>
+3. 點擊「允許」下載描述檔案<br>
+4. 前往「設定」→「通用」→「VPN與裝置管理」<br>
+5. 選擇下載的配置檔案並安裝<br>
+6. 輸入密碼完成安裝<br>
+7. 安裝後啟用 DoH 設定
+                    </code>
                 </div>
-                <div class="feature-card scroll-reveal">
-                    <div class="feature-icon">🔓</div>
-                    <h3>政府監控與審查</h3>
-                    <p>在某些國家，政府可能會監控DNS查詢以實施網路審查政策，攔截被禁網站的訪問請求。即使您不想被監控，也難以完全避免。使用DNS over HTTPS技術可以讓這種監控更加困難，因為DNS查詢被加密，監控者無法知道您正在訪問哪些網站。</p>
+                <div class="config-info">
+                    <a href="https://github.com/Lawlietr/avpclub.github.io/blob/main/iOS_conf/doh.avpclub.uk.mobileconfig" target="_blank" style="color: #60a5fa; font-weight: 600;">
+                        下載 iOS 配置文件
+                    </a>
+                </div>
+            </div>
+
+            <div class="tab-content" id="browser">
+                <p>Firefox 設定：</p>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span>設定步驟：</span>
+                        <button class="copy-btn" onclick="copyCode(this)">複製</button>
+                    </div>
+                    <code>
+1. 開啟設定 > 隱私與安全性<br>
+2. 向下捲動到 "DNS over HTTPS"<br>
+3. 選擇 "啟用"<br>
+4. 選擇 "自訂"<br>
+5. 輸入我們的服務位址：<br>
+   提供者URI: https://doh.avpclub.uk/dns-query
+                    </code>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="technology">
-        <div class="container">
-            <h2 class="section-title scroll-reveal">DNS over HTTPS技術</h2>
+    <!-- 常見問題 -->
+    <section id="faq" class="faq">
+        <div class="faq-container">
+            <h2 class="section-title">常見 <span>問題解答</span></h2>
             
-            <div class="comparison scroll-reveal">
-                <div class="comparison-card traditional">
-                    <h3>傳統DNS (UDP)</h3>
-                    <p>明文傳輸，容易被監控和劫持</p>
-                    <ul class="comparison-list">
-                        <li>查詢內容可被任何中間人查看</li>
-                        <li>容易被DNS劫持攻擊</li>
-                        <li>ISP可以記錄所有查詢</li>
-                        <li>無法防止DNS洩漏</li>
-                    </ul>
+            <div class="faq-item">
+                <div class="faq-header">
+                    <h3>什麼是 DNS Over HTTPS (DoH)？</h3>
+                    <div class="faq-toggle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </div>
                 </div>
-                <div class="comparison-card doh">
-                    <h3>DNS over HTTPS</h3>
-                    <p>加密傳輸，保護查詢隱私</p>
-                    <ul class="comparison-list">
-                        <li>所有查詢都透過HTTPS加密</li>
-                        <li>防止中間人攻擊和劫持</li>
-                        <li>ISP只能看到與DoH伺服器的連線</li>
-                        <li>與現代HTTPS網站相同的安全等級</li>
-                    </ul>
+                <div class="faq-content">
+                    <p>DNS Over HTTPS (DoH) 是一種將傳統的 DNS 查詢透過 HTTPS 加密傳輸的協議。它將 DNS 查詢和回應都包裝在 HTTPS 協議中，防止竊聽、劫持和篡改，提供更安全的域名解析服務。</p>
                 </div>
             </div>
 
-            <div class="tech-demo scroll-reveal">
-                <h3 style="text-align: center; margin-bottom: 2rem; color: var(--primary);">DoH運作原理</h3>
-                <div class="tech-diagram">
-                    <div class="tech-step">
-                        <div class="icon">💻</div>
-                        <h4>您的裝置</h4>
-                        <p>發起DNS查詢</p>
+            <div class="faq-item">
+                <div class="faq-header">
+                    <h3>為什麼需要使用 DoH？</h3>
+                    <div class="faq-toggle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
                     </div>
-                    <div class="arrow">→</div>
-                    <div class="tech-step">
-                        <div class="icon">🔒</div>
-                        <h4>HTTPS加密</h4>
-                        <p>查詢被加密</p>
-                    </div>
-                    <div class="arrow">→</div>
-                    <div class="tech-step">
-                        <div class="icon">🌐</div>
-                        <h4>DoH伺服器</h4>
-                        <p>安全地解析網域名稱</p>
-                    </div>
-                    <div class="arrow">→</div>
-                    <div class="tech-step">
-                        <div class="icon">🔓</div>
-                        <h4>加密回應</h4>
-                        <p>傳回IP位址</p>
-                    </div>
+                </div>
+                <div class="faq-content">
+                    <p>傳統 DNS 查詢是明文傳輸的，這意味著您的 ISP、網絡攻擊者或其他中間人可以監控、記錄或篡改您的 DNS 查詢。DoH 加密所有 DNS 流量，保護您的上網活動隱私，防止 DNS 嗅探、劫持和ISP監控。</p>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <section id="setup">
-        <div class="container">
-            <h2 class="section-title scroll-reveal">如何使用DoH.avpclub.uk</h2>
-            
-        <div class="setup-guide scroll-reveal">
-                <div class="setup-item">
-                    <div class="setup-header">
-                        <span class="device-icon">📱</span>
-                        <h4>iOS 裝置 (iPhone / iPad)</h4>
-                        <span class="arrow-icon">▼</span>
-                    </div>
-                    <div class="setup-body">
-                        <div class="step-content">
-                            <p>在iOS上最簡單的方式是下載並安裝設定檔：</p>
-                            <ol style="margin-left: 1.5rem; color: var(--text-muted);">
-                                <li>點擊下方的下載按鈕，下載設定檔</li>
-                                <li>前往「設定」>「已下載的描述檔」</li>
-                                <li>找到並點擊「DoH.avpclub.uk」設定檔</li>
-                                <li>點擊「安裝」並輸入裝置密碼</li>
-                                <li>在「設定」>「一般」>「VPN與裝置管理」中確認已啟用</li>
-                            </ol>
-                            <div style="margin-top: 1rem;">
-                                <a href="https://raw.githubusercontent.com/Lawlietr/avpclub.github.io/refs/heads/main/iOS_conf/doh.avpclub.uk.mobileconfig" class="ios-download" target="_blank">
-                                    📥 下載 iOS 設定檔
-                                </a>
-                            </div>
-                        </div>
+            <div class="faq-item">
+                <div class="faq-header">
+                    <h3>DoH 會變慢我的上網速度嗎？</h3>
+                    <div class="faq-toggle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
                     </div>
                 </div>
+                <div class="faq-content">
+                    <p>不會。DoH.avpclub.uk 使用高性能解析器，加密和解密過程的開銷極小，幾乎不會影響解析速度。實際上，由於我們優化的路由和緩存策略，DoH 的解析速度可能比傳統 DNS 更快。</p>
+                </div>
+            </div>
 
-                <div class="setup-item">
-                    <div class="setup-header">
-                        <span class="device-icon">🤖</span>
-                        <h4>Android 裝置 (Android 13+)</h4>
-                        <span class="arrow-icon">▼</span>
-                    </div>
-                    <div class="setup-body">
-                        <div class="step-content">
-                            <p>Android 13 及以上版本支援 DoH 設定：</p>
-                            <ol style="margin-left: 1.5rem; color: var(--text-muted);">
-                                <li>開啟「設定」>「網路與網際網路」>「VPN與網路」</li>
-                                <li>長按您的 Wi-Fi 網路並選擇「修改網路」</li>
-                                <li>勾選「顯示進階選項」</li>
-                                <li>展開「IP設定」並選擇「私有 DNS」</li>
-                                <li>選擇「私有 DNS的主機名稱」</li>
-                                <li>輸入：doh.avpclub.uk</li>
-                                <li>點擊「儲存」</li>
-                            </ol>
-                            <div class="code-block">私有 DNS 主機名稱: doh.avpclub.uk</div>
-                        </div>
+            <div class="faq-item">
+                <div class="faq-header">
+                    <h3>你們會記錄我的上網資料嗎？</h3>
+                    <div class="faq-toggle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
                     </div>
                 </div>
+                <div class="faq-content">
+                    <p>我們秉持零日誌政策，完全不記錄任何使用者的 DNS 查詢內容、IP 位址或上網行為。我們只記錄必要的連線統計資料用於服務維護和防禦攻擊。</p>
+                </div>
+            </div>
 
-                <div class="setup-item">
-                    <div class="setup-header">
-                        <span class="device-icon">🪟</span>
-                        <h4>Windows 11</h4>
-                        <span class="arrow-icon">▼</span>
-                    </div>
-                    <div class="setup-body">
-                        <div class="step-content">
-                            <p>Windows 11內建了DoH支援：</p>
-                            <ol style="margin-left: 1.5rem; color: var(--text-muted);">
-                                <li>開啟設定 > 網路和網際網路</li>
-                                <li>選擇您的網路連線</li>
-                                <li>點擊 "編輯DNS伺服器"</li>
-                                <li>選擇 "加密DNS (DoH)"</li>
-                                <li>輸入我們的服務位址</li>
-                            </ol>
-                            <div class="code-block">DoH範本: https://doh.avpclub.uk/dns-query</div>
-                        </div>
+            <div class="faq-item">
+                <div class="faq-header">
+                    <h3>DoH 和普通 DNS 有什麼區別？</h3>
+                    <div class="faq-toggle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
                     </div>
                 </div>
+                <div class="faq-content">
+                    <table style="width: 100%; border-collapse: collapse; margin: 1rem 0; color: var(--text-secondary);">
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 0.75rem; text-align: left; font-weight: 600;">功能</td>
+                            <td style="padding: 0.75rem; text-align: left; color: var(--primary-color);">傳統 DNS</td>
+                            <td style="padding: 0.75rem; text-align: left; color: var(--accent-color);">DoH</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 0.75rem;">傳輸協議</td>
+                            <td style="padding: 0.75rem;">UDP/TCP (明文)</td>
+                            <td style="padding: 0.75rem;">HTTPS (加密)</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <td style="padding: 0.75rem;">安全性</td>
+                            <td style="padding: 0.75rem;">易被竊聽</td>
+                            <td style="padding: 0.75rem;">完全加密</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.75rem;">隱私保護</td>
+                            <td style="padding: 0.75rem;">ISP 可監控</td>
+                            <td style="padding: 0.75rem;">無法監控</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
 
-                <div class="setup-item">
-                    <div class="setup-header">
-                        <span class="device-icon">🍎</span>
-                        <h4>macOS (Big Sur 11+)</h4>
-                        <span class="arrow-icon">▼</span>
-                    </div>
-                    <div class="setup-body">
-                        <div class="step-content">
-                            <p>macOS (Big Sur 11 及以上) 支援 DoH 設定：</p>
-                            <ol style="margin-left: 1.5rem; color: var(--text-muted);">
-                                <li>開啟「系統設定」>「網路」</li>
-                                <li>選擇您的 Wi-Fi 網路</li>
-                                <li>點擊「詳細資訊」或「設定」</li>
-                                <li>點擊「DNS」標籤</li>
-                                <li>點擊「+」新增 DNS 伺服器</li>
-                                <li>輸入：https://doh.avpclub.uk/dns-query</li>
-                                <li>點擊「好」</li>
-                            </ol>
-                            <div class="code-block">DNS 伺服器: https://doh.avpclub.uk/dns-query</div>
-                        </div>
+            <div class="faq-item">
+                <div class="faq-header">
+                    <h3>DoH 會被封鎖嗎？</h3>
+                    <div class="faq-toggle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
                     </div>
                 </div>
-
-                <div class="setup-item">
-                    <div class="setup-header">
-                        <span class="device-icon">🟨</span>
-                        <h4>Chrome 瀏覽器</h4>
-                        <span class="arrow-icon">▼</span>
-                    </div>
-                    <div class="setup-body">
-                        <div class="step-content">
-                            <p>Chrome也支援DoH設定：</p>
-                            <ol style="margin-left: 1.5rem; color: var(--text-muted);">
-                                <li>在網址列輸入 chrome://settings/security</li>
-                                <li>找到 "使用安全DNS"</li>
-                                <li>選擇 "自訂"</li>
-                                <li>輸入我們的服務位址</li>
-                            </ol>
-                            <div class="code-block">DNS供應商: https://doh.avpclub.uk/dns-query</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="setup-item">
-                    <div class="setup-header">
-                        <span class="device-icon">🦊</span>
-                        <h4>Firefox 瀏覽器</h4>
-                        <span class="arrow-icon">▼</span>
-                    </div>
-                    <div class="setup-body">
-                        <div class="step-content">
-                            <p>在Firefox中啟用DoH非常簡單：</p>
-                            <ol style="margin-left: 1.5rem; color: var(--text-muted);">
-                                <li>開啟設定 > 隱私與安全性</li>
-                                <li>向下捲動到 "DNS over HTTPS"</li>
-                                <li>選擇 "啟用"</li>
-                                <li>選擇 "自訂"</li>
-                                <li>輸入我們的服務位址</li>
-                            </ol>
-                            <div class="code-block">提供者URI: https://doh.avpclub.uk/dns-query</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="setup-item">
-                    <div class="setup-header">
-                        <span class="device-icon">🟦</span>
-                        <h4>Edge 瀏覽器</h4>
-                        <span class="arrow-icon">▼</span>
-                    </div>
-                    <div class="setup-body">
-                        <div class="step-content">
-                            <p>Edge瀏覽器的設定步驟：</p>
-                            <ol style="margin-left: 1.5rem; color: var(--text-muted);">
-                                <li>開啟設定 > 隱私、搜尋和服務</li>
-                                <li>找到 "使用安全DNS"</li>
-                                <li>選擇 "選擇服務供應商"</li>
-                                <li>選擇 "自訂"</li>
-                                <li>輸入我們的服務位址</li>
-                            </ol>
-                            <div class="code-block">DNS提供程式: https://doh.avpclub.uk/dns-query</div>
-                        </div>
-                    </div>
+                <div class="faq-content">
+                    <p>由於 DoH 使用標準的 HTTPS 443 埠，與普通網際網路流量一樣，因此極少被封鎖。即使某些國家封鎖特定域名，您仍可以透過 IP 直接訪問 DoH 服務。</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="faq">
-        <div class="container">
-            <h2 class="section-title scroll-reveal">常見問題</h2>
-            <div class="faq">
-                <div class="faq-item scroll-reveal">
-                    <div class="faq-question">
-                        <h4>什麼是DNS over HTTPS (DoH)？</h4>
-                        <span class="arrow-icon">▼</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>DNS over HTTPS是一種將DNS查詢透過HTTPS協定傳輸的技術。它將傳統的明文DNS查詢加密，防止第三方監控您的網路活動，提供與HTTPS網站相同等級的安全性。</p>
-                    </div>
-                </div>
-
-                <div class="faq-item scroll-reveal">
-                    <div class="faq-question">
-                        <h4>DoH會影響網速嗎？</h4>
-                        <span class="arrow-icon">▼</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>由於需要建立HTTPS連線，DoH可能會有輕微的延遲增加。然而，現代瀏覽器和作業系統已經優化了DoH的實作，對大多數使用者來說，差異幾乎不可察覺。在某些情況下，DoH甚至可能更快，因為它可以繞過某些ISP的DNS伺服器。</p>
-                    </div>
-                </div>
-
-                <div class="faq-item scroll-reveal">
-                    <div class="faq-question">
-                        <h4>這個服務是免費的嗎？</h4>
-                        <span class="arrow-icon">▼</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>是的！DoH.avpclub.uk完全免費且無償提供。我們致力於促進網路隱私和開放網際網路，不收集、不出售任何使用者資料。</p>
-                    </div>
-                </div>
-
-                <div class="faq-item scroll-reveal">
-                    <div class="faq-question">
-                        <h4>DoH和DNS over TLS (DoT)有什麼差別？</h4>
-                        <span class="arrow-icon">▼</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>兩者都加密DNS查詢，但使用不同的通訊協定。DoH使用HTTPS（連接埠443），看起來像一般的網站流量，更容易透過防火牆；DoT使用TLS（連接埠853），是專門為DNS設計的。DoH更適合瀏覽器使用，而DoT更適合作業系統層面的設定。</p>
-                    </div>
-                </div>
-
-                <div class="faq-item scroll-reveal">
-                    <div class="faq-question">
-                        <h4>我可以在多個裝置上使用這個服務嗎？</h4>
-                        <span class="arrow-icon">▼</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>當然！您可以在任何支援DoH的裝置上使用我們的服務，包括電腦、手機、平板等。沒有使用限制，也無需註冊帳號。</p>
-                    </div>
-                </div>
-
-                <div class="faq-item scroll-reveal">
-                    <div class="faq-question">
-                        <h4>如何驗證DoH是否正常運作？</h4>
-                        <span class="arrow-icon">▼</span>
-                    </div>
-                    <div class="faq-answer">
-                        <p>您可以造訪 https://dnsleaktest.com 進行DNS洩漏測試。如果設定正確，您應該會看到我們的伺服器位址而不是您ISP的DNS伺服器。另外，我們的監視器服務即時顯示服務狀態。</p>
-                    </div>
-                </div>
-            </div>
+    <!-- CTA 區域 -->
+    <section class="cta-section">
+        <div class="cta-container">
+            <h2 class="cta-title">保護您的 DNS 隱私</h2>
+            <p class="cta-text">立即配置 DoH 服務，享受安全加密的上網體驗</p>
+            <a href="#tutorial" class="cta-btn">開始配置</a>
         </div>
     </section>
 
-    <section id="github">
-        <div class="container">
-            <h2 class="section-title scroll-reveal">專案資訊</h2>
-            <div class="github-links">
-                <div class="github-card scroll-reveal">
-                    <div class="github-icon">📁</div>
-                    <h3>專案Github首頁</h3>
-                    <p>查看專案源碼、了解更多技術細節，或參與貢獻</p>
-                    <a href="https://github.com/Lawlietr/avpclub.github.io" target="_blank">GitHub 首頁</a>
-                </div>
-                <div class="github-card scroll-reveal">
-                    <div class="github-icon">📊</div>
-                    <h3>服務狀態</h3>
-                    <p>即時監控DoH服務的運作狀態和可用性</p>
-                    <a href="https://github.com/Lawlietr/upptime.doh.avpclub.uk" target="_blank">監視器狀態</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
+    <!-- 頁腳 -->
     <footer>
-        <div class="container">
-            <p>&copy; 2025 DoH.avpclub.uk - 免費DNS加密服務</p>
-            <p style="margin-top: 0.5rem;">保護您的網路隱私，促進開放網際網路</p>
-            <div style="margin-top: 2rem;">
-                <a href="mailto:dns.github.armored046@slmail.me" style="color: var(--primary); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: rgba(0, 212, 255, 0.1); border-radius: 20px; border: 1px solid rgba(0, 212, 255, 0.2); transition: all 0.3s;">
-                    📧 聯絡我們
-                </a>
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>關於 DoH</h4>
+                    <p>DoH.avpclub.uk 是一個免費、無日誌、安全的 DNS Over HTTPS 服務，旨在保護使用者的網路隱私。</p>
+                </div>
+                <div class="footer-col">
+                    <h4>服務條款</h4>
+                    <ul>
+                        <li><a href="#hero">首頁</a></li>
+                        <li><a href="#tutorial">使用教學</a></li>
+                        <li><a href="#faq">常見問題</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>技術支援</h4>
+                    <ul>
+                        <li><a href="https://github.com/Lawlietr/upptime.doh.avpclub.uk" target="_blank">服務狀態</a></li>
+                        <li><a href="https://github.com/Lawlietr/avpclub.github.io/issues" target="_blank">問題回報</a></li>
+                        <li><a href="mailto:dns.github.armored046@slmail.me">聯絡我們</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2024 DoH.avpclub.uk. 所有權利保留。</p>
             </div>
         </div>
     </footer>
 
+    <!-- 返回頂部按鈕 -->
+    <div class="scroll-to-top" id="scrollToTop">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 19V5"></path>
+            <path d="M5 12l7-7 7 7"></path>
+        </svg>
+    </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const faqItems = document.querySelectorAll('.faq-item');
+        // 選項卡功能
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // 移除所有 tab 的 active 類
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // 添加當前 tab 的 active 類
+                tab.classList.add('active');
+                
+                // 顯示對應的內容
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // FAQ 項目點擊功能
+        document.querySelectorAll('.faq-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const item = header.parentElement;
+                item.classList.toggle('active');
+            });
+        });
+
+        // 返回頂部按鈕功能
+        const scrollToTopBtn = document.getElementById('scrollToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollToTopBtn.style.display = 'flex';
+            } else {
+                scrollToTopBtn.style.display = 'none';
+            }
+        });
+
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // 複製代碼功能
+        function copyCode(btn) {
+            const codeBlock = btn.parentElement.parentElement.querySelector('code');
+            const text = codeBlock.innerText;
             
-            faqItems.forEach(item => {
-                const question = item.querySelector('.faq-question');
-                question.addEventListener('click', () => {
-                    const isActive = item.classList.contains('active');
-                    
-                    faqItems.forEach(otherItem => {
-                        otherItem.classList.remove('active');
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = '✓ 已複製';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                }, 2000);
+            });
+        }
+
+        // 選單切換功能
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // 點擊導航連結時關閉選單
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // 平滑滾動
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 70,
+                        behavior: 'smooth'
                     });
-                    
-                    if (!isActive) {
-                        item.classList.add('active');
-                    }
-                });
-            });
-
-            const setupItems = document.querySelectorAll('.setup-item');
-            
-            setupItems.forEach(item => {
-                const header = item.querySelector('.setup-header');
-                header.addEventListener('click', () => {
-                    const isActive = item.classList.contains('active');
-                    
-                    if (isActive) {
-                        item.classList.remove('active');
-                    } else {
-                        item.classList.add('active');
-                    }
-                });
-            });
-
-            const observerOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.1
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('revealed');
-                    }
-                });
-            }, observerOptions);
-
-            const scrollRevealElements = document.querySelectorAll('.scroll-reveal');
-            scrollRevealElements.forEach(el => {
-                observer.observe(el);
-            });
-
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        const offsetTop = target.offsetTop - 80;
-                        window.scrollTo({
-                            top: offsetTop,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
+                }
             });
         });
     </script>
